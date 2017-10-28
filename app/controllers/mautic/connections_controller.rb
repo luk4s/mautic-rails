@@ -1,10 +1,10 @@
 module Mautic
-  class MauticConnectionsController < ApplicationController
+  class ConnectionsController < ApplicationController
     before_action :set_mautic_connection, only: [:show, :edit, :update, :destroy, :oauth2, :authorize]
 
     # GET /mautic_connections
     def index
-      @mautic_connections = MauticConnection.order(:url)
+      @mautic_connections = Connection.order(:url)
     end
 
     # GET /mautic_connections/1
@@ -13,7 +13,7 @@ module Mautic
 
     # GET /mautic_connections/new
     def new
-      @mautic_connection = MauticConnection.new
+      @mautic_connection = Connection.new
     end
 
     # GET /mautic_connections/1/edit
@@ -22,7 +22,7 @@ module Mautic
 
     # POST /mautic_connections
     def create
-      @mautic_connection = MauticConnection.new(mautic_connection_params)
+      @mautic_connection = Connection.new(mautic_connection_params)
 
       if @mautic_connection.save
         redirect_to @mautic_connection, notice: t('mautic.text_mautic_connection_created')
@@ -34,7 +34,7 @@ module Mautic
     # PATCH/PUT /mautic_connections/1
     def update
       if @mautic_connection.update(mautic_connection_params)
-        redirect_to @mautic_connection, notice: t('mautic.text_mautic_connection_updated')
+        redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_connection_updated')
       else
         render :edit
       end
@@ -43,7 +43,7 @@ module Mautic
     # DELETE /mautic_connections/1
     def destroy
       @mautic_connection.destroy
-      redirect_to :mautic_connections, notice: t('mautic.text_mautic_connection_destroyed')
+      redirect_to :connections, notice: t('mautic.text_mautic_connection_destroyed')
     end
     
     # ==--==--==--==--
@@ -56,7 +56,7 @@ module Mautic
       begin
         response = @mautic_connection.get_code(params.require(:code))
         @mautic_connection.update(token: response.token, refresh_token: response.refresh_token)
-        return redirect_to mautic.mautic_connection_path(@mautic_connection), notice: t('mautic.text_mautic_authorize_successfully')
+        return redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_authorize_successfully')
       rescue OAuth2::Error => e
         flash[:error] = e.message
       end
@@ -67,14 +67,14 @@ module Mautic
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_mautic_connection
-        @mautic_connection = MauticConnection.find(params[:id])
+        @mautic_connection = Connection.find(params[:id])
       rescue ActiveRecord::RecordNotFound => e
         return render head: 404, plain: e.message
       end
 
       # Only allow a trusted parameter "white list" through.
       def mautic_connection_params
-        params.require(:mautic_connection).permit(:url, :client_id, :secret, :type)
+        params.require(:connection).permit(:url, :client_id, :secret, :type)
       end
   end
 end

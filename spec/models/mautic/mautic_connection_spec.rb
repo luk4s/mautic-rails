@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Mautic
-  RSpec.describe MauticConnection, type: :model do
+  RSpec.describe Connection, type: :model do
     pending "add some examples to (or delete) #{__FILE__}"
   end
 end

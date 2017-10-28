@@ -1,5 +1,5 @@
 Mautic::Engine.routes.draw do
-  resources :mautic_connections do
+  resources :connections do
     member do
       get :authorize
       get :oauth2

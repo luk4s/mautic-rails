@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :mautic_connection, class: 'Mautic::MauticConnection' do
+  factory :mautic_connection, class: 'Mautic::Connection' do
     url { 'https://' + Faker::Internet.unique.domain_name }
     client_id { Faker::Internet.password }
     secret { Faker::Internet.password }

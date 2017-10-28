@@ -1,6 +1,6 @@
 module Mautic
   module Connections
-    class Oauth2 < Mautic::MauticConnection
+    class Oauth2 < Mautic::Connection
 
       def client
         @client ||= OAuth2::Client.new(client_id, secret, {
@@ -26,7 +26,7 @@ module Mautic
 
       def callback_url
         uri = URI.parse(Mautic.config.base_url)
-        uri.path = Mautic::Engine.routes.url_helpers.oauth2_mautic_connection_path(self)
+        uri.path = Mautic::Engine.routes.url_helpers.oauth2_connection_path(self)
         uri.to_s
       end
 

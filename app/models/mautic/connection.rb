@@ -1,5 +1,5 @@
 module Mautic
-  class MauticConnection < ApplicationRecord
+  class Connection < ApplicationRecord
 
     self.table_name = 'mautic_connections'
 

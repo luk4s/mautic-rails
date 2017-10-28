@@ -15,11 +15,11 @@
   <tbody>
     <% @mautic_connections.each do |mautic_connection| %>
       <tr>
-        <td><%= link_to(mautic_connection.url, mautic.mautic_connection_path(mautic_connection)) %></td>
+        <td><%= link_to(mautic_connection.url, mautic.connection_path(mautic_connection)) %></td>
         <td><%= mautic_connection.client_id %></td>
         <td><%= mautic_connection.secret %></td>
-        <td><%= link_to 'Edit', mautic.edit_mautic_connection_path(mautic_connection) %></td>
-        <td><%= link_to 'Destroy', mautic.mautic_connection_path(mautic_connection), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', mautic.edit_connection_path(mautic_connection) %></td>
+        <td><%= link_to 'Destroy', mautic.connection_path(mautic_connection), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -27,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Mautic Connection', mautic.new_mautic_connection_path %>
+<%= link_to 'New Mautic Connection', mautic.new_connection_path %>

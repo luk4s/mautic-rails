@@ -1,4 +1,4 @@
-<%= form_with(model: mautic_connection, local: true) do |form| %>
+<%= form_with(model: mautic_connection.becomes(Mautic::Connection), local: true) do |form| %>
   <% if mautic_connection.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(mautic_connection.errors.count, "error") %> prohibited this mautic_connection from being saved:</h2>
