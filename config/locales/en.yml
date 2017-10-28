@@ -1,0 +1,17 @@
+en:
+  attributes:
+  activerecord:
+    models:
+      mautic_connection: Mautic
+    attributes:
+      mautic_connection:
+        url: Address
+        client_id: Public key
+        secret: Secret key
+        token: Code
+
+  mautic:
+    text_mautic_connection_created: Mautic connection created
+    text_mautic_connection_updated: Mautic connection updated
+    text_mautic_connection_destroyed: Mautic connection destroyed
+    text_mautic_authorize_successfully: Connection authorized!

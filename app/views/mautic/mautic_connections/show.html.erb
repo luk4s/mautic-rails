@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @mautic_connection.url %>
+</p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @mautic_connection.client_id %>
+</p>
+
+<p>
+  <strong>Secret:</strong>
+  <%= @mautic_connection.secret %>
+</p>
+
+<%= link_to 'Authorize', mautic.authorize_mautic_connection_path(@mautic_connection) %> |
+<%= link_to 'Edit', mautic.edit_mautic_connection_path(@mautic_connection) %> |
+<%= link_to 'Back', mautic.mautic_connections_path %>
