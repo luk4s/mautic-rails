@@ -59,6 +59,12 @@ Mautic.configure do |config|
 end
 ```
 
+add to `config/routes.rb`
+```ruby
+mount Mautic::Engine => "/mautic"
+
+```
+
 ## Contributing
 Contribution directions go here.
 
