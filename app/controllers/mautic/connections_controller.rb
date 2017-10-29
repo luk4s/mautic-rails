@@ -5,47 +5,76 @@ module Mautic
     # GET /mautic_connections
     def index
       @mautic_connections = Connection.order(:url)
+      respond_to do |format|
+        format.html { render layout: !request.xhr? }
+        format.json { render json: @mautic_connections }
+      end
     end
 
     # GET /mautic_connections/1
     def show
+      respond_to do |format|
+        format.html { render layout: !request.xhr? }
+      end
     end
 
     # GET /mautic_connections/new
     def new
       @mautic_connection = Connection.new
+      respond_to do |format|
+        format.html { render layout: !request.xhr? }
+      end
     end
 
     # GET /mautic_connections/1/edit
     def edit
+      respond_to do |format|
+        format.html { render layout: !request.xhr? }
+      end
     end
 
     # POST /mautic_connections
     def create
       @mautic_connection = Connection.new(mautic_connection_params)
 
-      if @mautic_connection.save
-        redirect_to @mautic_connection, notice: t('mautic.text_mautic_connection_created')
-      else
-        render :new
+      respond_to do |format|
+        if @mautic_connection.save
+          format.html { redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_connection_created') }
+          format.js { head :no_content }
+          format.json { render json: @mautic_connection }
+        else
+          format.html { render :new }
+          format.js { head :unprocessable_entity }
+          format.json { render json: @mautic_connection.errors, status: :unprocessable_entity }
+        end
       end
     end
 
     # PATCH/PUT /mautic_connections/1
     def update
-      if @mautic_connection.update(mautic_connection_params)
-        redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_connection_updated')
-      else
-        render :edit
+      respond_to do |format|
+        if @mautic_connection.update(mautic_connection_params)
+          format.html { redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_connection_updated') }
+          format.js { head :no_content }
+          format.json { render json: @mautic_connection }
+        else
+          format.html { render :edit }
+          format.js { head :unprocessable_entity }
+          format.json { render json: @mautic_connection.errors, status: :unprocessable_entity }
+        end
       end
     end
 
     # DELETE /mautic_connections/1
     def destroy
       @mautic_connection.destroy
-      redirect_to :connections, notice: t('mautic.text_mautic_connection_destroyed')
+      respond_to do |format|
+        format.html { redirect_to :connections, notice: t('mautic.text_mautic_connection_destroyed') }
+        format.js { render js: "document.getElementById('#{view_context.dom_id(@mautic_connection)}').remove()" }
+        format.json { render json: @mautic_connection }
+      end
     end
-    
+
     # ==--==--==--==--
 
     def authorize
@@ -56,7 +85,7 @@ module Mautic
       begin
         response = @mautic_connection.get_code(params.require(:code))
         @mautic_connection.update(token: response.token, refresh_token: response.refresh_token)
-        return redirect_to mautic.connection_path(@mautic_connection), notice: t('mautic.text_mautic_authorize_successfully')
+        return render plain: t('mautic.text_mautic_authorize_successfully')
       rescue OAuth2::Error => e
         flash[:error] = e.message
       end
@@ -65,16 +94,16 @@ module Mautic
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_mautic_connection
-        @mautic_connection = Connection.find(params[:id])
-      rescue ActiveRecord::RecordNotFound => e
-        return render head: 404, plain: e.message
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_mautic_connection
+      @mautic_connection = Connection.find(params[:id])
+    rescue ActiveRecord::RecordNotFound => e
+      return render head: 404, plain: e.message
+    end
 
-      # Only allow a trusted parameter "white list" through.
-      def mautic_connection_params
-        params.require(:connection).permit(:url, :client_id, :secret, :type)
-      end
+    # Only allow a trusted parameter "white list" through.
+    def mautic_connection_params
+      params.require(:connection).permit(:url, :client_id, :secret, :type)
+    end
   end
 end
