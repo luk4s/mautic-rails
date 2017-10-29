@@ -53,7 +53,7 @@ add to `config/initializers/mautic.rb`:
 ```ruby
 Mautic.configure do |config|
   # This is for oauth handshake token url. I need to know where your app listen
-  config.base_url = "https:://my-rails-app.com"
+  config.base_url = "https://my-rails-app.com"
   # *optional* This is your default mautic URL - used in form helper 
   config.mautic_url = "https://mautic.my.app"
 end
