@@ -5,6 +5,14 @@ module Mautic
   include ::ActiveSupport::Configurable
 
   autoload :FormHelper, 'mautic/form_helper'
+  autoload :Proxy, 'mautic/proxy'
+  autoload :Model, 'mautic/model'
+
+  class TokenExpiredError < StandardError
+  end
+
+  class AuthorizeError < StandardError
+  end
 
   configure do |config|
     # This is URL your application - its for oauth callbacks

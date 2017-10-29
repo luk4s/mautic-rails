@@ -1,6 +1,6 @@
 module Mautic
   RSpec.describe ConnectionsController do
-    let(:mautic_connection) { FactoryBot.create(:mautic_connection, :oauth2) }
+    let(:mautic_connection) { FactoryBot.create(:oauth2) }
     let(:mautic_connections_list) { FactoryBot.create_list(:mautic_connection, 3) }
 
     it '#index' do
@@ -61,8 +61,8 @@ module Mautic
     end
 
     context 'get access token' do
-      require 'pry-rails'
-      let(:oauth2) { FactoryBot.create(:mautic_connection, :oauth2) }
+
+      let(:oauth2) { FactoryBot.create(:oauth2) }
 
       it '#authorize' do
         get mautic.authorize_connection_path(oauth2)
@@ -73,7 +73,7 @@ module Mautic
         code = SecureRandom.hex 8
         access_token = SecureRandom.hex 8
         refresh_token = SecureRandom.hex 8
-        stub =stub_request(:post, "#{oauth2.url}/oauth/v2/token").
+        stub = stub_request(:post, "#{oauth2.url}/oauth/v2/token").
           with(body: hash_including({
                                       client_id: oauth2.client_id,
                                       client_secret: oauth2.secret,

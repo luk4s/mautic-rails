@@ -22,6 +22,13 @@ module Mautic
         @connection ||= OAuth2::AccessToken.new(client, token, { refresh_token: refresh_token })
       end
 
+      def refresh!
+        response = connection.refresh!
+        @connection = nil
+        update(token: response.token, refresh_token: response.refresh_token)
+        response
+      end
+
       private
 
       def callback_url
