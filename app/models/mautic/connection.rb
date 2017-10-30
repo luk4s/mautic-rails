@@ -28,20 +28,15 @@ module Mautic
       raise NotImplementedError
     end
 
-    def contacts
-      # .all
-      # .first
-      # .find
-      # .where
-      Proxy.new(self, 'contacts')
+    %w(assets campaigns categories companies contacts emails forms messages notes notifications pages points roles stats users).each do |entity|
+      define_method entity do
+        Proxy.new(self, entity)
+      end
     end
 
-    # def contact
-    #   # .new
-    #   # .update
-    #   # .create
-    #   Proxy.new(self, Mautic::Contact)
-    # end
+    def request(type, path, params = {})
+      raise NotImplementedError
+    end
 
 
   end

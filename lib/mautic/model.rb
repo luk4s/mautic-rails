@@ -15,15 +15,23 @@ module Mautic
 
     end
 
-    def initialize(proxy, hash=nil)
-      @connection = proxy
-      @table = MauticHash.new
-      if (fields = hash['fields'])
-        basic = { created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time }
-        self.attributes = fields['all'].merge(basic)
-      elsif hash
-        self.attributes = hash
+    class << self
+
+      def endpoint
+        name.demodulize.underscore.pluralize
       end
+
+      def in(connection)
+        Proxy.new(connection, endpoint)
+      end
+
+    end
+
+    def initialize(connection, hash=nil)
+      @connection = connection
+      @table = MauticHash.new
+      self.attributes = { created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time } if hash
+      assign_attributes(hash)
     end
 
     def save(force = false)
@@ -32,7 +40,7 @@ module Mautic
 
     def update(force = false)
       return false if changes.blank?
-      json = @proxy.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_h })
+      json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_h })
       if json['errors']
         self.errors = json['errors']
       else
@@ -42,7 +50,7 @@ module Mautic
     end
 
     def create
-      json = @proxy.request(:post, "api/#{endpoint}/#{id}/new", { body: to_h })
+      json = @connection.request(:post, "api/#{endpoint}/#{id}/new", { body: to_h })
       if json['errors']
         self.errors = json['errors']
       else
@@ -52,7 +60,7 @@ module Mautic
     end
 
     def destroy
-      json = @proxy.request(:delete, "api/#{endpoint}/#{id}/delete")
+      json = @connection.request(:delete, "api/#{endpoint}/#{id}/delete")
       self.errors = json['errors'] if json['errors']
       json['errors'].blank?
     end
@@ -64,7 +72,7 @@ module Mautic
     private
 
     def endpoint
-      self.class.name.remove('Mautic').underscore.pluralize
+      self.class.endpoint
     end
 
     def attributes=(hash)
@@ -73,6 +81,17 @@ module Mautic
         @table[k] = v
       end
       @table.instance_variable_set(:@changes, nil)
+    end
+
+    def assign_attributes(source = nil)
+      source ||= {}
+      data = {}
+      if (fields = source['fields'])
+        data.merge!(fields['all']) if fields['all']
+      elsif source
+        data = source
+      end
+      self.attributes = data
     end
 
   end

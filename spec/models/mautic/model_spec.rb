@@ -63,6 +63,10 @@ module Mautic
         }
       end
 
+      let(:model_contact) do
+        'Mautic::Contact'.safe_constantize || Mautic.const_set('Contact', Class.new(Mautic::Model))
+      end
+
       it '#chagnes' do
         klass = oauth2.contacts.instance_variable_get :@target
         entity = klass.new(oauth2.contacts, contact['contact'])
@@ -72,7 +76,43 @@ module Mautic
         expect(entity.changes).not_to be_blank
       end
 
+      it '#create' do
+        attributes = { firstname: Faker::Name.first_name, email: Faker::Internet.email }
+        stub = stub_request(:post, "#{oauth2.url}/api/contacts/new").
+          with(body: hash_including(attributes),
+               headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }).
+          to_return({ status: 200,
+                      body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
+                      headers: { 'Content-Type' => 'application/json' }
+                    })
+        contact = Mautic::Contact.new(oauth2, attributes)
+        contact = oauth2.contacts.new(attributes)
+        contact.lastname = 'Lukas'
+        expect(contact.save).to eq true
 
+        expect(stub).to have_been_made
+      end
+
+      it '#destroy' do
+        stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
+                 .and_return({
+                               status: 200,
+                               body: { contact: { id: 1 } }.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+
+        destroy = stub_request(:delete, "#{oauth2.url}/api/contacts/1/delete")
+                    .and_return({
+                                  status: 200,
+                                  body: '{}',
+                                  headers: { 'Content-Type' => 'application/json' }
+                                })
+        contact = Mautic::Contact.in(oauth2).find(1)
+        expect(stub).to have_been_made
+        expect(contact.destroy).to eq true
+        expect(destroy).to have_been_made
+
+      end
 
 
     end

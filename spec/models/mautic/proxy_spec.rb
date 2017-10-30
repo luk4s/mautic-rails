@@ -157,7 +157,7 @@ module Mautic
           }
       }
     end
-require "pry-rails"
+
     context 'expire' do
       let(:expire_response) do
         { "errors" =>
@@ -200,32 +200,107 @@ require "pry-rails"
       end
     end
 
-    it '#all' do
-      stub = stub_request(:get, oauth2.url + '/api/contacts')
-               .and_return({
-                             status: 200,
-                             body: contacts.to_json,
-                             headers: { 'Content-Type' => 'application/json' }
-                           })
-      contacts = []
-      expect { contacts = oauth2.contacts.all }.not_to raise_error
-      expect(stub).to have_been_made
-      expect(contacts.size).to eq 1
-    end
+    context 'contacts' do
+      it '#all' do
+        stub = stub_request(:get, oauth2.url + '/api/contacts')
+                 .and_return({
+                               status: 200,
+                               body: contacts.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        contacts = []
+        expect { contacts = oauth2.contacts.all }.not_to raise_error
+        expect(stub).to have_been_made
+        expect(contacts.size).to eq 1
+      end
 
-    it '#find' do
-      stub = stub_request(:get, "#{oauth2.url}/api/contacts/47")
-               .and_return({
-                             status: 200,
-                             body: contact.to_json,
-                             headers: { 'Content-Type' => 'application/json' }
-                           })
-      contact = nil
-      expect { contact = oauth2.contacts.find(47) }.not_to raise_error
-      expect(stub).to have_been_made
-      expect(contact.firstname).to eq 'Jim'
+      it '#find' do
+        stub = stub_request(:get, "#{oauth2.url}/api/contacts/47")
+                 .and_return({
+                               status: 200,
+                               body: contact.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        contact = nil
+        expect { contact = oauth2.contacts.find(47) }.not_to raise_error
+        expect(stub).to have_been_made
+        expect(contact.firstname).to eq 'Jim'
+      end
     end
+require "pry-rails"
+    context 'forms' do
+      let(:forms) do
+        {
+          "total" => 1,
+          "forms" => [
+            {
+              "id" => 3,
+              "name" => "Newlsetter",
+              "alias" => "newsletter",
+              "isPublished" => true,
+              "dateAdded" => "2015-07-15T15:06:02-05:00",
+              "createdBy" => 1,
+              "createdByUser" => "Joe Smith",
+              "dateModified" => "2015-07-20T13:11:56-05:00",
+              "modifiedBy" => 1,
+              "modifiedByUser" => "Joe Smith",
+              "cachedHtml" => "\n\n<script...",
+              "submissionCount" => 10,
+              "fields" => {
+                "26" => {
+                  "id" => 26,
+                  "label" => "Email",
+                  "showLabel" => false,
+                  "alias" => "email",
+                  "type" => "text",
+                  "isRequired" => true,
+                  "validationMessage" => "Email is required",
+                  "order" => 1,
+                  "properties" => {
+                    "placeholder" => "Email address"
+                  }},
+                "27" => {
+                  "id" => 27,
+                  "label" => "Submit",
+                  "showLabel" => true,
+                  "alias" => "submit",
+                  "type" => "button",
+                  "isRequired" => false,
+                  "order" => 4,
+                  "properties" => []}
+              },
+              "actions" => {
+                "4" => {
+                  "id" => 4,
+                  "type" => "email.send.lead",
+                  "name" => "Send thank you email",
+                  "order" => 1,
+                  "properties" => {
+                    "email" => 21
+                  }
+                }
+              }
+            }
+          ]
+        }
+      end
+      let(:model_form) do
+        'Mautic::Form'.safe_constantize || Mautic.const_set('Form', Class.new(Mautic::Model))
+      end
 
+      it '#all' do
+        stub = stub_request(:get, oauth2.url + '/api/forms')
+                 .and_return({
+                               status: 200,
+                               body: forms.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        forms = []
+        expect { forms = oauth2.forms.all }.not_to raise_error
+        expect(stub).to have_been_made
+        expect(forms.size).to eq 1
+      end
+    end
 
   end
 end

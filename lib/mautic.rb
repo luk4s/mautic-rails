@@ -11,6 +11,10 @@ module Mautic
   class TokenExpiredError < StandardError
   end
 
+  class ValidationError < StandardError
+
+  end
+
   class AuthorizeError < StandardError
   end
 
@@ -21,4 +25,8 @@ module Mautic
     config.mautic_url = "https://mautic.my.app"
   end
   # Your code goes here...
+
+  class Contact < Model
+
+  end
 end
