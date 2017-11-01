@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir['spec/*']
 
   # s.add_dependency 'rails', '~> 5.1'
-  s.add_dependency 'rails', '>= 4.2.8'
+  s.add_dependency 'rails', '~> 4.2', '>= 4.2.8'
   s.add_dependency 'jquery-rails', '~> 3.1'
   # s.add_dependency 'oauth', '~> 0.5.3'
   s.add_dependency 'oauth2', '~> 1.4'
