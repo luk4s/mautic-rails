@@ -1,6 +1,7 @@
 # Mautic rails 
 RoR helper / wrapper for Mautic API and forms
 
+*Rails 4 compatible*
 ## Usage
 ### Gem provides API connection to your Mautic(s)
   1. Create mautic connection
@@ -58,7 +59,7 @@ There are two options of usage:
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'mautic'
+gem 'mautic', '~>0.1'
 ```
 
 And then execute:
