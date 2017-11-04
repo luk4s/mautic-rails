@@ -27,7 +27,4 @@ module Mautic
   end
   # Your code goes here...
 
-  class Contact < Model
-
-  end
 end
