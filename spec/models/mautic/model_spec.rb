@@ -55,16 +55,13 @@ module Mautic
                 "all" => {
                   "title" => "Mr",
                   "firstname" => "Jim",
+                  "lastname" => "Joe",
                   "twitter" => "jimcontact"
                 }
               }
             }
 
         }
-      end
-
-      let(:model_contact) do
-        'Mautic::Contact'.safe_constantize || Mautic.const_set('Contact', Class.new(Mautic::Model))
       end
 
       it '#chagnes' do
@@ -123,6 +120,17 @@ module Mautic
                              })
         contact = Mautic::Contact.in(oauth2).find(1)
         expect(contact.attributes).to include *%i(created_at title firstname)
+      end
+
+      it '#name' do
+        _stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
+                  .and_return({
+                                status: 200,
+                                body: contact.to_json,
+                                headers: { 'Content-Type' => 'application/json' }
+                              })
+        contact = Mautic::Contact.in(oauth2).find(1)
+        expect(contact.name).to eq 'Jim Joe'
       end
 
 

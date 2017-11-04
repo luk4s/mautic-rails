@@ -28,10 +28,14 @@ module Mautic
       raise NotImplementedError
     end
 
-    %w(assets campaigns categories companies contacts emails forms messages notes notifications pages points roles stats users).each do |entity|
+    %w(assets campaigns categories companies emails forms messages notes notifications pages points roles stats users).each do |entity|
       define_method entity do
         Proxy.new(self, entity)
       end
+    end
+
+    def contacts
+      Proxy.new(self, 'contacts', default_params: { search: '!is:anonymous' })
     end
 
     def request(type, path, params = {})
