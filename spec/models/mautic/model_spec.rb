@@ -114,6 +114,17 @@ module Mautic
 
       end
 
+      it '#attributes' do
+        _stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
+                 .and_return({
+                               status: 200,
+                               body: contact.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        contact = Mautic::Contact.in(oauth2).find(1)
+        expect(contact.attributes).to include *%i(created_at title firstname)
+      end
+
 
     end
 

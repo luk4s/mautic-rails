@@ -69,6 +69,10 @@ module Mautic
       @table.changes
     end
 
+    def attributes
+      @table.to_h
+    end
+
     private
 
     def endpoint
