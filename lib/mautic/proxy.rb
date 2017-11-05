@@ -13,29 +13,27 @@ module Mautic
       @target.new(@connection, attributes)
     end
 
-    def all(options = {})
+    def all(options = {}, &block)
       if options[:limit] == 'all'
 
         options.delete(:limit)
 
         records = results = where(options)
-        per_page = results.size.to_f
         total = @last_response['total'].to_i
-
-        return results if per_page >= total && !block_given?
-        ((total - per_page) / per_page).ceil.times do |i|
+        while records.any?
           if block_given?
-            records.each {|record| yield record }
+            records.each &block
           end
-          c = (per_page * (i + 1))
-          records = where(options.merge(start: c.to_i))
+          break if results.size >= total
+
+          records = where(options.merge(start: records.size))
           results.concat records
         end
-
-        results
       else
-        where(options)
+        results = where(options)
+        results.each{|i| yield i } if block_given?
       end
+      results
     end
 
     def where(params = {})
