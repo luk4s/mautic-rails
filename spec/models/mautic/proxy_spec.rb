@@ -239,36 +239,57 @@ module Mautic
         contacts = []
         expect { contacts = oauth2.contacts.all(limit: 'all') }.not_to raise_error
         expect(stub).to have_been_requested.times(4)
-        expect(contacts.size > 30).to be_truthy
+        expect(contacts.size >= 99).to be_truthy
       end
 
-      it '#all with block' do
-        r = {}
-        30.times {|i| r[i.to_s] = {'id' => i.to_s}}
+      it '#all with block with paginate' do
         stub1 = stub_request(:get, "#{oauth2.url}/api/contacts?search=!is:anonymous")
                  .and_return({
                                status: 200,
-                               body: {'total' => '50', 'contacts' => r }.to_json,
+                               body: {
+                                 'total' => '54',
+                                 'contacts' => (1..30).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
+                               }.to_json,
                                headers: { 'Content-Type' => 'application/json' }
                              })
-        a = {}
-        20.times {|i| i += 30; a[i.to_s] = {'id' => i.to_s}}
         stub2 = stub_request(:get, "#{oauth2.url}/api/contacts?search=!is:anonymous&start=30")
                   .and_return({
                                 status: 200,
-                                body: {'total' => '50', 'contacts' => a }.to_json,
+                                body: {
+                                  'total' => '54',
+                                  'contacts' => (31..54).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
+                                }.to_json,
                                 headers: { 'Content-Type' => 'application/json' }
                               })
         index = 0
-        all = r.merge(a)
         contacts = oauth2.contacts.all(limit: 'all') do |contact|
-          break if index > 31
-          expect(all.has_key?(contact.id)).to eq true
           index += 1
+          expect(contact.id).to eq index
         end
+        expect(index).to eq 54
         expect(stub1).to have_been_requested.times(1)
         expect(stub2).to have_been_requested.times(1)
-        expect(contacts.size).to eq 50
+        expect(contacts.size).to eq 54
+      end
+
+      it '#all with block without pagination' do
+        stub1 = stub_request(:get, "#{oauth2.url}/api/contacts?search=!is:anonymous")
+                  .and_return({
+                                status: 200,
+                                body: {
+                                  'total' => '22',
+                                  'contacts' => (1..22).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
+                                }.to_json,
+                                headers: { 'Content-Type' => 'application/json' }
+                              })
+        index = 0
+        contacts = oauth2.contacts.all(limit: 'all') do |contact|
+          index += 1
+          expect(contact.id).to eq index
+        end
+        expect(index).to eq 22
+        expect(stub1).to have_been_requested.times(1)
+        expect(contacts.size).to eq 22
       end
 
       context 'default_params' do
