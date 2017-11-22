@@ -31,6 +31,7 @@ module Mautic
       raise ArgumentError if @data.nil?
       defaults = {
         'submit' => '1',
+        'return' => host,
         'domain' => host
       }
       defaults.merge(@data.to_h).inject({}){|mem, (name, value)| mem["mauticform[#{name}]"] = value; mem}
@@ -41,7 +42,12 @@ module Mautic
       uri.path = '/form/submit'
       headers = {}
       headers.store 'X-Forwarded-For', forward_ip if forward_ip
-      RestClient.post uri.to_s, data, headers
+      begin
+        @response = RestClient.post uri.to_s, data, headers
+      rescue RestClient::Found => e
+        @response = e
+      end
+
     end
     alias_method :push, :submit
   end
