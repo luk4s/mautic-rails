@@ -6,6 +6,13 @@ RoR helper / wrapper for Mautic API and forms
 ### Gem provides API connection to your Mautic(s)
   1. Create mautic connection
   2. Authorize it
+      
+      In mautic you need add API oauth2 login.
+      For URI callback allow:
+      ```
+      http://localhost:3000/mautic/connections/:ID/oauth2
+      ```
+      ID = is your Mautic::Connection ID
   
    Find connection which you want to use:
   ```ruby

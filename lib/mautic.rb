@@ -19,6 +19,10 @@ module Mautic
   class AuthorizeError < StandardError
   end
 
+  class RecordNotFound < StandardError
+
+  end
+
   configure do |config|
     # This is URL your application - its for oauth callbacks
     config.base_url = "http://localhost:3000"

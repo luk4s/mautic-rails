@@ -30,9 +30,10 @@ module Mautic
       end
 
       def request(type, path, params = {})
-        json = JSON.parse connection.request(type, path, params).body
+        response = connection.request(type, path, params)
+        json = JSON.parse response.body
         Array(json['errors']).each do |error|
-          case error['code']
+          case error['code'].to_i
           when 400
             # Validation error
           when 401
@@ -40,6 +41,8 @@ module Mautic
             @try_to_refresh = true
             refresh!
             json = request(type, path, params)
+          when 404
+            raise Mautic::RecordNotFound.new(error['message'])
           else
             raise Mautic::AuthorizeError.new("#{error['code']} - #{error['message']}")
           end
