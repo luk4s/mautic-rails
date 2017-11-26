@@ -214,17 +214,33 @@ module Mautic
         expect(contacts.size).to eq 1
       end
 
-      it '#find' do
-        stub = stub_request(:get, "#{oauth2.url}/api/contacts/47")
-                 .and_return({
-                               status: 200,
-                               body: contact.to_json,
-                               headers: { 'Content-Type' => 'application/json' }
-                             })
-        contact = nil
-        expect { contact = oauth2.contacts.find(47) }.not_to raise_error
-        expect(stub).to have_been_made
-        expect(contact.firstname).to eq 'Jim'
+      context '#find' do
+
+        it 'item found' do
+          stub = stub_request(:get, "#{oauth2.url}/api/contacts/47")
+                   .and_return({
+                                 status: 200,
+                                 body: contact.to_json,
+                                 headers: { 'Content-Type' => 'application/json' }
+                               })
+          contact = nil
+          expect { contact = oauth2.contacts.find(47) }.not_to raise_error
+          expect(stub).to have_been_made
+          expect(contact.firstname).to eq 'Jim'
+        end
+
+        it 'not found' do
+          stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
+                   .and_return({
+                                 status: 404,
+                                 body: {errors: [code: 404]}.to_json,
+                                 headers: { 'Content-Type' => 'application/json' }
+                               })
+          contact = nil
+          expect { contact = oauth2.contacts.find(1) }.to raise_error Mautic::RecordNotFound
+          expect(stub).to have_been_made
+        end
+
       end
 
       it '#all paginate' do
