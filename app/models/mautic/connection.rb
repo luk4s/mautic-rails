@@ -39,9 +39,40 @@ module Mautic
     end
 
     def request(type, path, params = {})
-      raise NotImplementedError
+      @last_request = [type, path, params]
+      response = raise NotImplementedError
+      parse_response(response)
     end
 
+    private
+
+    def parse_response(response)
+      case response.status
+      when 400
+        raise Mautic::ValidationError.new(response)
+      when 404
+        raise Mautic::RecordNotFound.new(response)
+      when 200
+        json = JSON.parse(response.body) rescue {}
+        Array(json['errors']).each do |error|
+          case error['code'].to_i
+          when 401
+            raise Mautic::TokenExpiredError.new(response) if @try_to_refresh
+            @try_to_refresh = true
+            refresh!
+            json = request(*@last_request)
+          when 404
+            raise Mautic::RecordNotFound.new(response)
+          else
+            raise Mautic::RequestError.new(response)
+          end
+        end
+      else
+        raise Mautic::RequestError.new(response)
+      end
+
+      json
+    end
 
   end
 end

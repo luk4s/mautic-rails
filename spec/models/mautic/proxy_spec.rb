@@ -4,79 +4,79 @@ module Mautic
     let(:contacts) do
       {
         "total" => "1",
-        "contacts" => {"47" =>
-          {
-            "id" => 47,
-            "isPublished" => true,
-            "dateAdded" => "2015-07-21T12:27:12-05:00",
-            "createdBy" => 1,
-            "createdByUser" => "Joe Smith",
-            "dateModified" => "2015-07-21T14:12:03-05:00",
-            "modifiedBy" => 1,
-            "modifiedByUser" => "Joe Smith",
-            "owner" => {
-              "id" => 1,
-              "username" => "joesmith",
-              "firstName" => "Joe",
-              "lastName" => "Smith"
-            },
-            "points" => 10,
-            "lastActive" => "2015-07-21T14:19:37-05:00",
-            "dateIdentified" => "2015-07-21T12:27:12-05:00",
-            "color" => "ab5959",
-            "ipAddresses" => {
-              "111.111.111.111" => {
-                "ipAddress" => "111.111.111.111",
-                "ipDetails" => {
-                  "city" => "",
-                  "region" => "",
-                  "country" => "",
-                  "latitude" => "",
-                  "longitude" => "",
-                  "isp" => "",
-                  "organization" => "",
-                  "timezone" => ""
-                }
-              }
-            },
-            "fields" => {
-              "core" => {
-                "title" => {
-                  "id" => "1",
-                  "label" => "Title",
-                  "alias" => "title",
-                  "type" => "lookup",
-                  "group" => "core",
-                  "value" => "Mr"
-                },
-                "firstname" => {
-                  "id" => "2",
-                  "label" => "First Name",
-                  "alias" => "firstname",
-                  "type" => "text",
-                  "group" => "core",
-                  "value" => "Jim"
-                }
-              },
-              "social" => {
-                "twitter" => {
-                  "id" => "17",
-                  "label" => "Twitter",
-                  "alias" => "twitter",
-                  "type" => "text",
-                  "group" => "social",
-                  "value" => "jimcontact"
-                }
-              },
-              "personal" => [],
-              "professional" => [],
-              "all" => {
-                "title" => "Mr",
-                "firstname" => "Jim",
-                "twitter" => "jimcontact"
-              }
-            }
-          }
+        "contacts" => { "47" =>
+                          {
+                            "id" => 47,
+                            "isPublished" => true,
+                            "dateAdded" => "2015-07-21T12:27:12-05:00",
+                            "createdBy" => 1,
+                            "createdByUser" => "Joe Smith",
+                            "dateModified" => "2015-07-21T14:12:03-05:00",
+                            "modifiedBy" => 1,
+                            "modifiedByUser" => "Joe Smith",
+                            "owner" => {
+                              "id" => 1,
+                              "username" => "joesmith",
+                              "firstName" => "Joe",
+                              "lastName" => "Smith"
+                            },
+                            "points" => 10,
+                            "lastActive" => "2015-07-21T14:19:37-05:00",
+                            "dateIdentified" => "2015-07-21T12:27:12-05:00",
+                            "color" => "ab5959",
+                            "ipAddresses" => {
+                              "111.111.111.111" => {
+                                "ipAddress" => "111.111.111.111",
+                                "ipDetails" => {
+                                  "city" => "",
+                                  "region" => "",
+                                  "country" => "",
+                                  "latitude" => "",
+                                  "longitude" => "",
+                                  "isp" => "",
+                                  "organization" => "",
+                                  "timezone" => ""
+                                }
+                              }
+                            },
+                            "fields" => {
+                              "core" => {
+                                "title" => {
+                                  "id" => "1",
+                                  "label" => "Title",
+                                  "alias" => "title",
+                                  "type" => "lookup",
+                                  "group" => "core",
+                                  "value" => "Mr"
+                                },
+                                "firstname" => {
+                                  "id" => "2",
+                                  "label" => "First Name",
+                                  "alias" => "firstname",
+                                  "type" => "text",
+                                  "group" => "core",
+                                  "value" => "Jim"
+                                }
+                              },
+                              "social" => {
+                                "twitter" => {
+                                  "id" => "17",
+                                  "label" => "Twitter",
+                                  "alias" => "twitter",
+                                  "type" => "text",
+                                  "group" => "social",
+                                  "value" => "jimcontact"
+                                }
+                              },
+                              "personal" => [],
+                              "professional" => [],
+                              "all" => {
+                                "title" => "Mr",
+                                "firstname" => "Jim",
+                                "twitter" => "jimcontact"
+                              }
+                            }
+                          }
         }
       }
     end
@@ -233,7 +233,7 @@ module Mautic
           stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
                    .and_return({
                                  status: 404,
-                                 body: {errors: [code: 404]}.to_json,
+                                 body: { errors: [code: 404] }.to_json,
                                  headers: { 'Content-Type' => 'application/json' }
                                })
           contact = nil
@@ -245,11 +245,11 @@ module Mautic
 
       it '#all paginate' do
         r = {}
-        30.times {|i| r[i.to_s] = {'id' => i.to_s}}
+        30.times { |i| r[i.to_s] = { 'id' => i.to_s } }
         stub = stub_request(:get, /#{oauth2.url}\/api\/contacts.*/)
                  .and_return({
                                status: 200,
-                               body: {'total' => '99', 'contacts' => r }.to_json,
+                               body: { 'total' => '99', 'contacts' => r }.to_json,
                                headers: { 'Content-Type' => 'application/json' }
                              })
         contacts = []
@@ -260,20 +260,20 @@ module Mautic
 
       it '#all with block with paginate' do
         stub1 = stub_request(:get, "#{oauth2.url}/api/contacts?search=!is:anonymous")
-                 .and_return({
-                               status: 200,
-                               body: {
-                                 'total' => '54',
-                                 'contacts' => (1..30).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
-                               }.to_json,
-                               headers: { 'Content-Type' => 'application/json' }
-                             })
+                  .and_return({
+                                status: 200,
+                                body: {
+                                  'total' => '54',
+                                  'contacts' => (1..30).inject({}) { |mem, var| mem[var.to_s] = { 'id' => var }; mem }
+                                }.to_json,
+                                headers: { 'Content-Type' => 'application/json' }
+                              })
         stub2 = stub_request(:get, "#{oauth2.url}/api/contacts?search=!is:anonymous&start=30")
                   .and_return({
                                 status: 200,
                                 body: {
                                   'total' => '54',
-                                  'contacts' => (31..54).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
+                                  'contacts' => (31..54).inject({}) { |mem, var| mem[var.to_s] = { 'id' => var }; mem }
                                 }.to_json,
                                 headers: { 'Content-Type' => 'application/json' }
                               })
@@ -294,7 +294,7 @@ module Mautic
                                 status: 200,
                                 body: {
                                   'total' => '22',
-                                  'contacts' => (1..22).inject({}){|mem,var| mem[var.to_s] = {'id' => var}; mem}
+                                  'contacts' => (1..22).inject({}) { |mem, var| mem[var.to_s] = { 'id' => var }; mem }
                                 }.to_json,
                                 headers: { 'Content-Type' => 'application/json' }
                               })
@@ -314,7 +314,7 @@ module Mautic
           stub = stub_request(:get, "#{oauth2.url}/api/contacts?limit=1&search=!is:anonymous")
                    .and_return({
                                  status: 200,
-                                 body: {'total' => 1, 'contacts' => {'1' => {'id' => 1}}}.to_json,
+                                 body: { 'total' => 1, 'contacts' => { '1' => { 'id' => 1 } } }.to_json,
                                  headers: { 'Content-Type' => 'application/json' }
                                })
           oauth2.contacts.all(limit: 1)
@@ -355,7 +355,7 @@ module Mautic
                   "order" => 1,
                   "properties" => {
                     "placeholder" => "Email address"
-                  }},
+                  } },
                 "27" => {
                   "id" => 27,
                   "label" => "Submit",
@@ -364,7 +364,7 @@ module Mautic
                   "type" => "button",
                   "isRequired" => false,
                   "order" => 4,
-                  "properties" => []}
+                  "properties" => [] }
               },
               "actions" => {
                 "4" => {

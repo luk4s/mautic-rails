@@ -8,18 +8,46 @@ module Mautic
   autoload :Proxy, 'mautic/proxy'
   autoload :Model, 'mautic/model'
 
-  class TokenExpiredError < StandardError
+  class RequestError < StandardError
+
+    attr_reader :response, :errors
+
+    def initialize(response, message = nil)
+      @errors ||= []
+      @response = response
+      json_body = JSON.parse(response.body) rescue {}
+      message ||= Array(json_body['errors']).collect do |error|
+        msg = error['code'].to_s
+        msg << " (#{error['type']}):" if error['type']
+        msg << " #{error['message']}"
+        @errors << error['message']
+        msg
+      end.join(', ')
+
+      super(message)
+    end
+
   end
 
-  class ValidationError < StandardError
+  class TokenExpiredError < RequestError
+  end
+
+  class ValidationError < RequestError
+
+    def initialize(response, message = nil)
+      @response = response
+      json_body = JSON.parse(response.body) rescue {}
+      @errors = Array(json_body['errors']).inject({}) { |mem, var| mem.merge!(var['details']); mem }
+      message ||= @errors.collect { |field, msg| "#{field}: #{msg.join(', ')}" }.join('; ')
+      super(response, message)
+    end
 
   end
 
-  class AuthorizeError < StandardError
+  class AuthorizeError < RequestError
   end
 
-  class RecordNotFound < StandardError
-
+  class RecordNotFound < RequestError
   end
 
   configure do |config|
