@@ -52,7 +52,7 @@ module Mautic
         raise Mautic::ValidationError.new(response)
       when 404
         raise Mautic::RecordNotFound.new(response)
-      when 200
+      when 200, 201
         json = JSON.parse(response.body) rescue {}
         Array(json['errors']).each do |error|
           case error['code'].to_i

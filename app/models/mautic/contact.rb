@@ -9,5 +9,13 @@ module Mautic
       "#{firstname} #{lastname}"
     end
 
+    def first_name= arg
+      self.firstname = arg
+    end
+
+    def last_name= arg
+      self.lastname = arg
+    end
+
   end
 end
