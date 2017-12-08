@@ -35,10 +35,6 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
-  # DatabaseCleaner.clean_with(
-  #   :truncation,
-  #   except: %w(ar_internal_metadata)
-  # )
 
   config.before(:suite) do
     DatabaseCleaner.clean_with(:truncation, except: %w(ar_internal_metadata))
@@ -46,10 +42,6 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
-  end
-
-  config.before(:each, js: true) do
-    DatabaseCleaner.strategy = :truncation
   end
 
   config.before(:each) do
@@ -66,21 +58,4 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
 
-  # config.before(:each) do |ex|
-  #   meta = ex.metadata
-  #   unless meta[:null]
-  #     case meta[:logged]
-  #     when :admin
-  #       logged(Symphonia::User, FactoryBot.create(:admin_user))
-  #     when true
-  #       logged(Symphonia::User, FactoryBot.create(:user))
-  #     end
-  #   end
-  # end
-
-end
-
-
-def logged(model, user)
-  allow(model).to receive(:current).and_return(user)
 end
