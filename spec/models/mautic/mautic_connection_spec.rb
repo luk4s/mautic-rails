@@ -1,6 +1,34 @@
 require 'rails_helper'
 
 module Mautic
+
+  RSpec.describe Mautic::Connection do
+    context 'not implemented' do
+      let(:conn) { described_class.new }
+      it '#client' do
+        expect { conn.client }.to raise_exception NotImplementedError
+      end
+
+      it '#authorize' do
+        expect { conn.authorize }.to raise_exception NotImplementedError
+      end
+
+      it '#get_code' do
+        expect { conn.get_code(SecureRandom.hex 4) }.to raise_exception NotImplementedError
+      end
+
+      it '#connection' do
+        expect { conn.connection }.to raise_exception NotImplementedError
+      end
+      it '#refresh!' do
+        expect { conn.refresh! }.to raise_exception NotImplementedError
+      end
+
+      it '#request' do
+        expect { conn.request(:get, '/api/', {}) }.to raise_exception NotImplementedError
+      end
+    end
+  end
   RSpec.describe Connections::Oauth2 do
     let(:oauth2) { FactoryBot.create(:oauth2, token: Faker::Internet.password, refresh_token: Faker::Internet.password) }
 
@@ -22,9 +50,6 @@ module Mautic
     end
 
     context 'exceptions' do
-      let(:response_ok) do
-        { "contact" => { "id" => 47 } }
-      end
 
       let(:response_token_expired) do
         {
@@ -101,6 +126,15 @@ module Mautic
           expect(stub).to have_been_made
         end
 
+      end
+
+      it 'RequestError' do
+        stub = stub_request(:get, "#{oauth2.url}/data").to_return({
+                                                                            status: 422,
+                                                                            body: 'payment required',
+                                                                            headers: { 'Content-Type' => 'text/plain' }})
+        expect{oauth2.request(:get, 'data')}.to raise_exception Mautic::RequestError
+        expect(stub).to have_been_made
       end
 
 

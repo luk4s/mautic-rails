@@ -214,6 +214,18 @@ module Mautic
         expect(contacts.size).to eq 1
       end
 
+      it '#first' do
+        stub = stub_request(:get, /#{oauth2.url}\/api\/contacts\?limit=1.*/)
+                 .and_return({
+                               status: 200,
+                               body: contacts.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        contact = oauth2.contacts.first
+        expect(stub).to have_been_made
+        expect(contact.first_name).to eq 'Jim'
+      end
+
       context '#find' do
 
         it 'item found' do
@@ -380,9 +392,6 @@ module Mautic
             }
           ]
         }
-      end
-      let(:model_form) do
-        'Mautic::Form'.safe_constantize || Mautic.const_set('Form', Class.new(Mautic::Model))
       end
 
       it '#all' do
