@@ -15,6 +15,14 @@ module Mautic
 
     end
 
+    class Attribute < OpenStruct
+
+      def name
+        @alias
+      end
+
+    end
+
     class << self
 
       def endpoint
@@ -100,10 +108,24 @@ module Mautic
     end
 
     def assign_attributes(source = nil)
+      @mautic_attributes = []
       source ||= {}
       data = {}
+
       if (fields = source['fields'])
-        data.merge!(fields['all']) if fields['all']
+        if fields['all']
+          @mautic_attributes = fields['all'].collect do |key, value|
+            data[key] = value
+            Attribute.new(alias: key, value: value)
+          end
+        else
+          fields.each do |_group, pairs|
+            pairs.each do |key, attrs|
+              @mautic_attributes << (a = Attribute.new(attrs))
+              data[key] = a.value
+            end
+          end
+        end
       elsif source
         data = source
       end
