@@ -200,6 +200,25 @@ module Mautic
       end
     end
 
+
+    context 'parse contact without fields all' do
+      it '#find' do
+        data = contact.dup
+        data["contact"]["fields"].delete("all")
+        expect(data["contact"]["fields"]).not_to include "all"
+
+        stub_request(:get, "#{oauth2.url}/api/contacts/47")
+                 .and_return({
+                               status: 200,
+                               body: data.to_json,
+                               headers: { 'Content-Type' => 'application/json' }
+                             })
+        contact = oauth2.contacts.find(47)
+        expect(contact.first_name).to eq 'Jim'
+        expect(contact.twitter).to eq 'jimcontact'
+      end
+    end
+
     context 'contacts' do
       it '#all' do
         stub = stub_request(:get, /#{oauth2.url}\/api\/contacts.*/)

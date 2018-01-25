@@ -62,7 +62,7 @@ module Mautic
       }
     end
 
-    it '#chagnes' do
+    it '#changes' do
       klass = oauth2.contacts.instance_variable_get :@target
       entity = klass.new(oauth2.contacts, contact['contact'])
       expect(entity.twitter).to eq 'jimcontact'
