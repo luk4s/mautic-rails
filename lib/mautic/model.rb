@@ -38,7 +38,7 @@ module Mautic
     def initialize(connection, hash=nil)
       @connection = connection
       @table = MauticHash.new
-      self.attributes = { created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time } if hash
+      self.attributes = { id: hash['id'], created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time } if hash
       assign_attributes(hash)
       clear_changes
     end

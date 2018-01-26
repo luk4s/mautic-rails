@@ -214,6 +214,7 @@ module Mautic
                                headers: { 'Content-Type' => 'application/json' }
                              })
         contact = oauth2.contacts.find(47)
+	expect(contact.id).to eq 47
         expect(contact.first_name).to eq 'Jim'
         expect(contact.twitter).to eq 'jimcontact'
       end
