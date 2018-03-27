@@ -5,8 +5,8 @@ module Mautic
       def client
         @client ||= OAuth2::Client.new(client_id, secret, {
           site: url,
-          authorize_url: '/oauth/v2/authorize',
-          token_url: '/oauth/v2/token',
+          authorize_url: 'oauth/v2/authorize',
+          token_url: 'oauth/v2/token',
           raise_errors: false
         })
       end
