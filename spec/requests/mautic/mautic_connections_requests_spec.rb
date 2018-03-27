@@ -62,7 +62,7 @@ module Mautic
 
     context 'get access token' do
 
-      let(:oauth2) { FactoryBot.create(:oauth2) }
+      let(:oauth2) { FactoryBot.create(:oauth2, url: "https://#{Faker::Internet.unique.domain_name}/sub") }
 
       it '#authorize' do
         get mautic.authorize_connection_path(oauth2)
