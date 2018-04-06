@@ -33,6 +33,12 @@ module Mautic
         Proxy.new(connection, endpoint)
       end
 
+      def all(connection)
+        @connection = connection
+        json = @connection.request(:get, "api/#{endpoint}")
+        json[endpoint].map { |j| self.new(@connection, j) }
+      end
+
     end
 
     def initialize(connection, hash=nil)
