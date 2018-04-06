@@ -107,29 +107,14 @@ module Mautic
       self.class.endpoint
     end
 
-    def assign_attributes(source = nil)
-      @mautic_attributes = []
-      source ||= {}
-      data = {}
+    def assign_attributes(source = {})
+      @mautic_attributes ||= []
 
-      if (fields = source['fields'])
-        if fields['all']
-          @mautic_attributes = fields['all'].collect do |key, value|
-            data[key] = value
-            Attribute.new(alias: key, value: value)
-          end
-        else
-          fields.each do |_group, pairs|
-            pairs.each do |key, attrs|
-              @mautic_attributes << (a = Attribute.new(attrs))
-              data[key] = a.value
-            end
-          end
-        end
-      elsif source
-        data = source
+      source.each do |key, value|
+        @mautic_attributes << Attribute.new(key: key, value: value)
       end
-      self.attributes = data
+
+      self.attributes = source
     end
 
   end
