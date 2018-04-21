@@ -37,7 +37,7 @@ module Mautic
         expect {
           post(mautic.connections_path({ connection: FactoryBot.attributes_for(:mautic_connection) }))
         }.to change(Connection, :count).by 1
-        expect(response).to have_http_status :redirect
+        expect(response).to have_http_status :success
       end
 
     end
