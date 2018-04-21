@@ -1,4 +1,4 @@
-class CreateMauticMauticConnections < ActiveRecord::Migration[5.1]
+class CreateMauticMauticConnections < ActiveRecord::Migration
   def change
     create_table :mautic_connections do |t|
       t.string :type
@@ -10,7 +10,7 @@ class CreateMauticMauticConnections < ActiveRecord::Migration[5.1]
       t.string :token
       t.string :refresh_token
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

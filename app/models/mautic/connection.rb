@@ -3,8 +3,8 @@ module Mautic
 
     self.table_name = 'mautic_connections'
 
-    validates :url, :client_id, :secret, presence: true
-    validates :url, format: URI::regexp(%w(http https))
+    validates :url, presence: true, format: URI::regexp(%w(http https))
+    validates :client_id, :secret, presence: true, unless: :new_record?
 
     alias_attribute :access_token, :token
 
