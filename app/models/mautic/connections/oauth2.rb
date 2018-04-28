@@ -38,8 +38,7 @@ module Mautic
       private
 
       def callback_url
-        # return Mautic.config.oauth2_callback_url if Mautic.config.oauth2_callback_url
-        uri = URI.parse(Mautic.config.base_url)
+        uri = super
         uri.path = Mautic::Engine.routes.url_helpers.oauth2_connection_path(self)
         uri.to_s
       end

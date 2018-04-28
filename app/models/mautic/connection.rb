@@ -46,6 +46,14 @@ module Mautic
 
     private
 
+    def callback_url
+      if (conf = Mautic.config.base_url).is_a?(Proc)
+        conf = conf.call(self)
+      end
+
+      URI.parse(conf)
+    end
+
     def parse_response(response)
       case response.status
       when 400
