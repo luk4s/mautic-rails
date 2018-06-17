@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171028082047) do
+ActiveRecord::Schema.define(version: 2017_10_28_082047) do
 
   create_table "mautic_connections", force: :cascade do |t|
     t.string "type"

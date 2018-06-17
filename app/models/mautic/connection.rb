@@ -8,6 +8,11 @@ module Mautic
 
     alias_attribute :access_token, :token
 
+    # @param [ActionController::Parameters] params
+    def self.receive_webhook(params)
+      WebHook.new(find(params.require(:mautic_id)), params)
+    end
+
     def client
       raise NotImplementedError
     end

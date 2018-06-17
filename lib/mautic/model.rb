@@ -1,4 +1,6 @@
 module Mautic
+  # Virtual model for Mautic endpoint
+  #   @see https://developer.mautic.org/#endpoints
   class Model < OpenStruct
 
     class MauticHash < Hash
@@ -35,6 +37,7 @@ module Mautic
 
     end
 
+    # @param [Mautic::Connection] connection
     def initialize(connection, hash=nil)
       @connection = connection
       @table = MauticHash.new

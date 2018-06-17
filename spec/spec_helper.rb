@@ -8,6 +8,10 @@ require 'pry-rails'
 
 ActiveRecord::Migration.maintain_test_schema!
 
+Dir.glob(File.expand_path('../support/*.rb', __FILE__)).each do |file|
+  require file
+end
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # config.infer_spec_type_from_file_location!

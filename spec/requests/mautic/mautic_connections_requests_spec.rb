@@ -6,22 +6,22 @@ module Mautic
     it '#index' do
       mautic_connections_list # touch
       get mautic.connections_path
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
 
     it '#new' do
       get mautic.new_connection_path
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
 
     it '#edit' do
       get mautic.edit_connection_path(mautic_connection)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
 
     it '#show' do
       get mautic.connection_path(mautic_connection)
-      expect(response).to have_http_status(:success)
+      expect(response).to be_successful
     end
 
     context '#create' do
@@ -30,14 +30,14 @@ module Mautic
         expect {
           post mautic.connections_path({ connection: { name: '' } })
         }.to change(Connection, :count).by 0
-        expect(response).to have_http_status :success
+        expect(response).to be_successful
       end
 
       it 'valid' do
         expect {
           post(mautic.connections_path({ connection: FactoryBot.attributes_for(:mautic_connection) }))
         }.to change(Connection, :count).by 1
-        expect(response).to have_http_status :success
+        expect(response).to be_successful
       end
 
     end
@@ -46,7 +46,7 @@ module Mautic
 
       it 'invalid' do
         put mautic.connection_path(mautic_connection, { connection: { url: '' } })
-        expect(response).to have_http_status :success
+        expect(response).to be_successful
         expect(mautic_connection.reload.url).not_to be_blank
       end
 

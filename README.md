@@ -1,7 +1,7 @@
 # Mautic rails 
 RoR helper / wrapper for Mautic API and forms
 
-*Rails 4 compatible*
+*Rails 4.2.8+, 5.1+ compatible*
 ## Usage
 ### Gem provides API connection to your Mautic(s)
   1. Create mautic connection
@@ -61,6 +61,17 @@ There are two options of usage:
   m.data = {} # hash of attributes
   m.push # push data to mautic 
   ```
+  
+### Webhook receiver
+Receive webhook from mautic, parse it and prepare for use.
+
+  1. add concern to your controller
+      
+          include Mautic::ReceiveWebHooks
+  2. in routes must be specify `:mautic_id`, for example:
+  
+          post "webhook/:mautic_id", action: "webhook", on: :collection
+          
 
 ## Installation
 Add this line to your application's Gemfile:

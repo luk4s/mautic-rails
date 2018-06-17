@@ -1,5 +1,4 @@
 require "oauth2"
-require "jquery-rails"
 require "mautic/engine"
 
 module Mautic
