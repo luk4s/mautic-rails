@@ -1,4 +1,4 @@
-class CreateMauticMauticConnections < ActiveRecord::Migration[4.2]
+class CreateMauticMauticConnections < Mautic::DummyMigrationClass
   def change
     create_table :mautic_connections do |t|
       t.string :type

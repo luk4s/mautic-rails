@@ -1,7 +1,11 @@
 module Mautic
   RSpec.describe ConnectionsController do
-    let(:mautic_connection) { FactoryBot.create(:oauth2) }
+    include_context 'connection'
+
+    let(:mautic_connection) { oauth2 }
     let(:mautic_connections_list) { FactoryBot.create_list(:mautic_connection, 3) }
+
+    include_context "requests"
 
     it '#index' do
       mautic_connections_list # touch

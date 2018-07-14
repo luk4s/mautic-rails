@@ -44,7 +44,7 @@ module Mautic
     end
   end
   RSpec.describe Connections::Oauth2 do
-    let(:oauth2) { FactoryBot.create(:oauth2, token: Faker::Internet.password, refresh_token: Faker::Internet.password) }
+    include_context 'connection'
 
     it '#refresh' do
       stub = stub_request(:post, "#{oauth2.url}/oauth/v2/token").with(body: {

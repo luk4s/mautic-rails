@@ -5,9 +5,12 @@ module Mautic
     included do
 
     end
+
+    protected
+
     # params path need +:mautic_id+
     def webhook
-      @webhook = Mautic::Connection.receive_webhook params
+      @webhook ||= Mautic::Connection.receive_webhook params
     end
   end
 end

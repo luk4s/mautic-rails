@@ -5,13 +5,7 @@ module Mautic
     let(:mautic_connection) { FactoryBot.create(:mautic_connection) }
     let(:mautic_connections_list) { FactoryBot.create_list(:mautic_connection, 3) }
 
-    def params(hash)
-      if Rails.version.start_with?("5")
-        {params: hash}
-      else
-        hash
-      end
-    end
+    include_context "requests"
 
     routes { Mautic::Engine.routes }
 
@@ -20,28 +14,28 @@ module Mautic
       it "returns a success response" do
         mautic_connections_list # touch
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
     describe "GET #show" do
       it "returns a success response" do
         get :show, params({ id: mautic_connection.to_param })
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
     describe "GET #new" do
       it "returns a success response" do
         get :new
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
     describe "GET #edit" do
       it "returns a success response" do
         get :edit, params({ id: mautic_connection.to_param })
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -55,14 +49,14 @@ module Mautic
 
         it "redirects to the created mautic_connection" do
           post :create, params({ connection: FactoryBot.attributes_for(:mautic_connection) })
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
 
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'new' template)" do
           post :create, params({ connection: { url: "xxx" } })
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end
@@ -85,7 +79,7 @@ module Mautic
       context "with invalid params" do
         it "returns a success response (i.e. to display the 'edit' template)" do
           put :update, params({ id: mautic_connection.to_param, connection: { url: "", secret: "" } })
-          expect(response).to be_success
+          expect(response).to be_successful
         end
       end
     end

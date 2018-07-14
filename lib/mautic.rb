@@ -7,6 +7,7 @@ module Mautic
   autoload :FormHelper, 'mautic/form_helper'
   autoload :Proxy, 'mautic/proxy'
   autoload :Model, 'mautic/model'
+  autoload :Submissions, 'mautic/submissions'
 
   class RequestError < StandardError
 
@@ -57,5 +58,13 @@ module Mautic
     config.mautic_url = "https://mautic.my.app"
   end
   # Your code goes here...
+
+  if Rails.version.start_with? "4"
+    class DummyMigrationClass < ActiveRecord::Migration
+    end
+  else
+    class DummyMigrationClass < ActiveRecord::Migration[4.2]
+    end
+  end
 
 end
