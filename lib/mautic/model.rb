@@ -37,6 +37,8 @@ module Mautic
 
     end
 
+    attr_reader :connection
+
     # @param [Mautic::Connection] connection
     def initialize(connection, hash=nil)
       @connection = connection
@@ -44,6 +46,10 @@ module Mautic
       self.attributes = { id: hash['id'], created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time } if hash
       assign_attributes(hash)
       clear_changes
+    end
+
+    def mautic_id
+      "#{id}/#{@connection.id}"
     end
 
     def save(force = false)

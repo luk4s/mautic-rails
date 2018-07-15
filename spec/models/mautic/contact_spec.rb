@@ -158,6 +158,10 @@ module Mautic
         expect(mautic_contact.lastname).to eq mautic_contact.last_name
       end
 
+      it '#mautic_id' do
+        expect(mautic_contact.mautic_id).to eq "#{mautic_contact.id}/#{oauth2.id}"
+      end
+
     end
 
 
