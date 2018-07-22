@@ -1,4 +1,3 @@
-require 'pry-rails'
 module Mautic
   RSpec.describe Contact do
     include_context 'connection'
@@ -162,8 +161,19 @@ module Mautic
         expect(mautic_contact.mautic_id).to eq "#{mautic_contact.id}/#{oauth2.id}"
       end
 
-    end
+      describe '#tags' do
+        subject { mautic_contact.tags }
 
+        it 'its array' do
+          is_expected.to be_a Array
+        end
+
+        it 'include tag with name ' do
+          is_expected.to include(Mautic::Tag.new(oauth2, { id: 1, tag: "important" }))
+        end
+      end
+
+    end
 
 
   end

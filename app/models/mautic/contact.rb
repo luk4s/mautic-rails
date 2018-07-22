@@ -11,5 +11,12 @@ module Mautic
       "#{firstname} #{lastname}"
     end
 
+    def assign_attributes(source = nil)
+      super
+      self.attributes = {
+        tags: (source['tags'] || []).collect{|t| Mautic::Tag.new(@connection, t)}
+      } if source
+    end
+
   end
 end

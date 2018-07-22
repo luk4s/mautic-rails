@@ -116,6 +116,12 @@ RSpec.shared_context "contact", shared_context: :metadata do
               }
             }
           },
+          "tags"=>[
+            {
+              "id"=>1,
+              "tag"=>"important"
+            }
+          ],
           "fields" => {
             "core" => {
               "title" => {

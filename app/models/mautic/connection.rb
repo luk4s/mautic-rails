@@ -43,6 +43,10 @@ module Mautic
       Proxy.new(self, 'contacts', default_params: { search: '!is:anonymous' })
     end
 
+    def tags
+      Proxy.new(self, 'tags')
+    end
+
     def request(type, path, params = {})
       @last_request = [type, path, params]
       response = raise NotImplementedError
