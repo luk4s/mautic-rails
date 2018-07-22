@@ -129,6 +129,7 @@ module Mautic
           end
         else
           fields.each do |_group, pairs|
+            next unless pairs.is_a?(Hash)
             pairs.each do |key, attrs|
               @mautic_attributes << (a = Attribute.new(attrs))
               data[key] = a.value
