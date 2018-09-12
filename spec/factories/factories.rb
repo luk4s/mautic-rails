@@ -5,7 +5,7 @@ FactoryBot.define do
     secret { Faker::Internet.password }
 
     factory :oauth2, class: 'Mautic::Connections::Oauth2' do
-      type 'Mautic::Connections::Oauth2'
+      type { 'Mautic::Connections::Oauth2' }
     end
   end
 end

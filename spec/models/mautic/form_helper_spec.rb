@@ -36,5 +36,17 @@ module Mautic
       expect(stub).to have_been_made
     end
 
+    it '.submit on server error' do
+      stub = stub_request(:post, "https://mautic.my.app/form/submit")
+               .with(body: hash_including("mauticform" => hash_including("name", "domain"))).to_return(status: 500)
+
+      expect {
+        FormHelper.submit(form: 13, request: OpenStruct.new(host: Faker::Internet.domain_name)) do |i|
+          i.name = Faker::Name.first_name
+          i.email = Faker::Internet.free_email
+        end
+      }.to raise_error Mautic::NetworkError
+    end
+
   end
 end
