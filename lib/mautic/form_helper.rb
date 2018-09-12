@@ -1,5 +1,8 @@
-require 'rest-client'
+require 'net/https'
+
 module Mautic
+  class NetworkError < StandardError; end
+
   class FormHelper
 
     # shortcut
@@ -42,14 +45,42 @@ module Mautic
       uri.path = '/form/submit'
       headers = {}
       headers.store 'X-Forwarded-For', forward_ip if forward_ip
-      begin
-        @response = RestClient.post uri.to_s, data, headers
-      rescue RestClient::Found => e
-        @response = e
-      end
 
+      request = Net::HTTP::Post.new(uri.request_uri, headers)
+      request.set_form_data(data)
+      @response = perform_request(configure_http(uri), request)
     end
     alias_method :push, :submit
+
+    private
+
+    def configure_http(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+
+      if Gem.win_platform?
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      else
+        cert_store = OpenSSL::X509::Store.new
+        cert_store.set_default_paths
+        http.cert_store = cert_store
+        http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+      end
+      http
+    end
+
+    def perform_request(http, request)
+      response = nil
+      begin
+        response = http.request(request)
+      rescue => e
+        raise Mautic::NetworkError, e
+      end
+      if response.code.to_i >= 400
+        raise Mautic::NetworkError, "#{response.code} #{response.msg}"
+      end
+      response
+    end
   end
 
 end

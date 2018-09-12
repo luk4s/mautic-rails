@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rails', '>= 4.2.8'
   # s.add_dependency 'oauth', '~> 0.5.3'
   s.add_dependency 'oauth2', '~> 1.4'
-  s.add_dependency 'rest-client', '~> 2.0'
 
   s.add_development_dependency 'sqlite3', '~> 1.3'
   s.add_development_dependency('rspec-rails', '~> 3.7')
