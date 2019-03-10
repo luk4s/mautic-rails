@@ -1,3 +1,4 @@
 <h1>Editing Mautic Connection</h1>
 
 <%= render 'form', mautic_connection: @mautic_connection %>
+callback_url: <%= @mautic_connection.send :callback_url %>

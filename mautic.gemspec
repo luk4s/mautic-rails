@@ -29,6 +29,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency('factory_bot_rails', '~> 4.8')
   s.add_development_dependency('database_cleaner', '~> 1.6')
   s.add_development_dependency('faker', '~> 1.8')
-  s.add_development_dependency('webmock', '~> 3.4.2')
+  s.add_development_dependency('webmock', '~> 3.4')
   s.add_development_dependency('pry-rails', '~> 0.3')
 end

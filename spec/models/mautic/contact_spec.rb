@@ -173,8 +173,11 @@ module Mautic
         end
       end
 
-    end
+      it "#events" do
+        expect(mautic_contact.events).to be_a Proxy
+      end
 
+    end
 
   end
 

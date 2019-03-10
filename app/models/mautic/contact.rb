@@ -14,8 +14,12 @@ module Mautic
     def assign_attributes(source = nil)
       super
       self.attributes = {
-        tags: (source['tags'] || []).collect{|t| Mautic::Tag.new(@connection, t)}
+        tags: (source['tags'] || []).collect { |t| Mautic::Tag.new(@connection, t) }.sort_by(&:name)
       } if source
+    end
+
+    def events
+      @proxy_events ||= Proxy.new(connection, "contacts/#{id}/events", klass: "Mautic::Event")
     end
 
   end

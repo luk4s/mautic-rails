@@ -1,0 +1,126 @@
+{
+  "events": [
+    {
+      "event": "campaign.event",
+      "eventId": "campaign.event519712",
+      "eventLabel": {
+        "label": "remove from this campaign / 2018-10-subscription-plans-emails - 2nd email and further - LEAD GENERATION \u003ci data-toggle=\"tooltip\" title=\"This event encountered an error during the last attempt to process.\" class=\"fa fa-warning text-danger\"\u003e\u003c/i\u003e",
+        "href": "/s/campaigns/view/12"
+      },
+      "eventType": "Campaign action triggered",
+      "timestamp": "2019-03-03T17:07:03+00:00",
+      "extra": {},
+      "contentTemplate": "MauticCampaignBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-clock-o",
+      "contactId": "134786"
+    },
+    {
+      "event": "form.submitted",
+      "eventId": "form.submitted15522",
+      "eventLabel": {
+        "label": "Calculoid payment (Calculoid 2019)",
+        "href": "/s/forms/view/15"
+      },
+      "eventType": "Form submitted",
+      "timestamp": "2019-01-22T17:04:07+00:00",
+      "extra": {},
+      "contentTemplate": "MauticFormBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-pencil-square-o",
+      "contactId": "134786"
+    },
+    {
+      "event": "email.read",
+      "eventId": "email.read406778",
+      "eventLabel": {
+        "label": "2018-11-Cyber-Monday-50%-off",
+        "href": "/email/view/5bfc206f15aad776158378",
+        "isExternal": true
+      },
+      "eventType": "Email read",
+      "timestamp": "2018-11-27T07:05:11+00:00",
+      "extra": {
+        "stat": {
+          "email_id": "101",
+          "id": "406778",
+          "dateRead": "2018-11-27T07:05:11+00:00",
+          "dateSent": "2018-11-26T16:33:51+00:00",
+          "subject": "Cyber Monday – SAVE 50% on Calculoid [only next 24 hours]",
+          "email_name": "2018-11-Cyber-Monday-50%-off",
+          "isRead": "1",
+          "isFailed": "0",
+          "viewedInBrowser": "0",
+          "retryCount": "0",
+          "list_id": "49",
+          "list_name": "2018-11-cyber-monday(all-emails-MINUS-paid-users)",
+          "idHash": "5bfc206f15aad776158378",
+          "openDetails": [
+            {
+              "datetime": "2018-11-27 07:05:11",
+              "useragent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/605.1.15 (KHTML, like Gecko)",
+              "inBrowser": false
+            }
+          ],
+          "storedSubject": "Cyber Monday – SAVE 50% on Calculoid [only next 24 hours]",
+          "timeToRead": "PT14H31M20S"
+        },
+        "type": "read"
+      },
+      "contentTemplate": "MauticEmailBundle:SubscribedEvents\\Timeline:index.html.php",
+      "icon": "fa-envelope-o",
+      "contactId": "134786"
+    },
+    {
+      "event": "lead.identified",
+      "eventId": "lead.identified134786",
+      "icon": "fa-user",
+      "eventType": "Contact identified",
+      "eventPriority": -4,
+      "timestamp": "2017-07-18T10:40:41+00:00",
+      "featured": true
+    },
+    {
+      "event": "lead.create",
+      "eventId": "lead.create134786",
+      "icon": "fa-user-secret",
+      "eventType": "Contact created",
+      "eventPriority": -5,
+      "timestamp": "2017-07-18T10:40:41+00:00"
+    }
+  ],
+  "filters": {
+    "search": "",
+    "includeEvents": [],
+    "excludeEvents": []
+  },
+  "order": [
+    "timestamp",
+    "DESC"
+  ],
+  "types": {
+    "lead.ipadded": "Accessed from IP",
+    "asset.download": "Asset downloaded",
+    "campaign.event": "Campaign action triggered",
+    "campaign.event.scheduled": "Campaign event scheduled",
+    "lead.create": "Contact created",
+    "lead.source.created": "Contact created by source",
+    "lead.identified": "Contact identified",
+    "lead.source.identified": "Contact identified by source",
+    "lead.donotcontact": "Do not contact",
+    "email.failed": "Email failed",
+    "email.read": "Email read",
+    "email.replied": "Email replied",
+    "email.sent": "Email sent",
+    "form.submitted": "Form submitted",
+    "lead.imported": "Imported",
+    "message.queue": "Message Queue",
+    "page.hit": "Page hit",
+    "point.gained": "Point gained",
+    "stage.changed": "Stage changed",
+    "lead.utmtagsadded": "UTM tags recorded",
+    "page.videohit": "Video view event"
+  },
+  "total": 89,
+  "page": 1,
+  "limit": 25,
+  "maxPages": 2
+}

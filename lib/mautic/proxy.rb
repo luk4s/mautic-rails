@@ -2,15 +2,23 @@ module Mautic
   class Proxy
 
     def initialize(connection, endpoint, options = nil)
+      @options = options || {}
       @connection = connection
-      klass = "Mautic::#{endpoint.classify}"
+      klass = @options.delete(:klass) || "Mautic::#{endpoint.classify}"
       @target = klass.safe_constantize || Mautic.const_set(endpoint.classify, Class.new(Mautic::Model))
       @endpoint = endpoint
-      @options = options || {}
     end
 
     def new(attributes = {})
-      @target.new(@connection, attributes)
+      build_instance attributes
+    end
+
+    def data_name
+      @endpoint.split("/").last
+    end
+
+    def build_instance(data)
+      @target.new(@connection, data)
     end
 
     def all(options = {}, &block)
@@ -31,17 +39,18 @@ module Mautic
         end
       else
         results = where(options)
-        results.each{|i| yield i } if block_given?
+        results.each { |i| yield i } if block_given?
       end
       results
     end
 
     def where(params = {})
-      q =  params.reverse_merge(@options[:default_params] || {})
-      json = @connection.request(:get, "api/#{@endpoint}", {params: q })
+      q = params.reverse_merge(@options[:default_params] || {})
+      json = @connection.request(:get, "api/#{@endpoint}", { params: q })
+      @count = json["total"].to_i
       @last_response = json
-      json[@endpoint].collect do |id, attributes|
-        @target.new(@connection, attributes || id)
+      json[data_name].collect do |id, attributes|
+        build_instance attributes || id
       end
     end
 
@@ -52,9 +61,15 @@ module Mautic
     def find(id)
       json = @connection.request(:get, "api/#{@endpoint}/#{id}")
       @last_response = json
-      @target.new(@connection, json[@endpoint.singularize])
+      build_instance json[data_name.singularize]
     end
 
+    def count
+      return @count if defined? @count
+
+      json = @connection.request(:get, "api/#{@endpoint}", { limit: 1 })
+      @count = json["total"].to_i
+    end
 
   end
 end
