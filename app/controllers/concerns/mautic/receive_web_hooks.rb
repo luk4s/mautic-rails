@@ -8,7 +8,7 @@ module Mautic
 
     protected
 
-    # params path need +:mautic_id+
+    # @note params path need +:mautic_connection_id+ . => Its Mautic::Connection ID
     def webhook
       @webhook ||= Mautic::Connection.receive_webhook params
     end

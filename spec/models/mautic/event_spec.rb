@@ -48,7 +48,7 @@ module Mautic
 
       it "#label" do
         subject.each do |event|
-          expect(event.label).not_to raise_error
+          expect { event.label }.not_to raise_error
         end
       end
 

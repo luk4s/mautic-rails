@@ -19,9 +19,9 @@ module Mautic
 
     it "receive request and find connection" do
 
-      routes.draw { post "webhook/:mautic_id" => "mautic/foo#create" }
+      routes.draw { post "webhook/:mautic_connection_id" => "mautic/foo#create" }
 
-      post :create, params({ mautic_id: oauth2 }.merge(JSON.load file_fixture("form_submit_webhook1.json")))
+      post :create, params({ mautic_connection_id: oauth2 }.merge(JSON.load file_fixture("form_submit_webhook1.json")))
 
       expect(response).to be_successful
     end

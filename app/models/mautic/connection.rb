@@ -10,7 +10,7 @@ module Mautic
 
     # @param [ActionController::Parameters] params
     def self.receive_webhook(params)
-      WebHook.new(find(params.require(:mautic_id)), params)
+      WebHook.new(find(params.require(:mautic_connection_id)), params)
     end
 
     def client
