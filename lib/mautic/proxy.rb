@@ -29,9 +29,7 @@ module Mautic
         records = results = where(options)
         total = @last_response['total'].to_i
         while records.any?
-          if block_given?
-            records.each &block
-          end
+          records.each(&block) if block_given?
           break if results.size >= total
 
           records = where(options.merge(start: records.size))

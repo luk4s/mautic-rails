@@ -40,7 +40,7 @@ module Mautic
     attr_reader :connection
 
     # @param [Mautic::Connection] connection
-    def initialize(connection, hash=nil)
+    def initialize(connection, hash = nil)
       @connection = connection
       @table = MauticHash.new
       self.attributes = { id: hash['id'], created_at: hash['dateAdded']&.to_time, updated_at: hash['dateModified']&.to_time } if hash
@@ -119,27 +119,34 @@ module Mautic
     def assign_attributes(source = nil)
       @mautic_attributes = []
       source ||= {}
-      data = {}
 
-      if (fields = source['fields'])
-        if fields['all']
-          @mautic_attributes = fields['all'].collect do |key, value|
-            data[key] = value
-            Attribute.new(alias: key, value: value)
-          end
-        else
-          fields.each do |_group, pairs|
-            next unless pairs.is_a?(Hash)
-            pairs.each do |key, attrs|
-              @mautic_attributes << (a = Attribute.new(attrs))
-              data[key] = a.value
-            end
+      data = if (fields = source['fields'])
+               attributes_from_fields(fields)
+             elsif source
+               source
+             end
+      self.attributes = data
+    end
+
+    def attributes_from_fields(fields)
+      data = {}
+      if fields['all']
+        @mautic_attributes = fields['all'].collect do |key, value|
+          data[key] = value
+          Attribute.new(alias: key, value: value)
+        end
+      else
+        fields.each do |_group, pairs|
+          next unless pairs.is_a?(Hash)
+
+          pairs.each do |key, attrs|
+            @mautic_attributes << (a = Attribute.new(attrs))
+            data[key] = a.value
           end
         end
-      elsif source
-        data = source
       end
-      self.attributes = data
+
+      data
     end
 
   end

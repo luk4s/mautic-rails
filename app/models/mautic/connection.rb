@@ -66,11 +66,11 @@ module Mautic
     def parse_response(response)
       case response.status
       when 400
-        raise Mautic::ValidationError.new(response)
+        raise Mautic::ValidationError, response
       when 401
         json = try_to_refresh_and_parse(response)
       when 404
-        raise Mautic::RecordNotFound.new(response)
+        raise Mautic::RecordNotFound, response
       when 200, 201
         json = JSON.parse(response.body) rescue {}
         Array(json['errors']).each do |error|
@@ -78,13 +78,13 @@ module Mautic
           when 401
             json = try_to_refresh_and_parse(response)
           when 404
-            raise Mautic::RecordNotFound.new(response)
+            raise Mautic::RecordNotFound, response
           else
-            raise Mautic::RequestError.new(response)
+            raise Mautic::RequestError, response
           end
         end
       else
-        raise Mautic::RequestError.new(response)
+        raise Mautic::RequestError, response
       end
 
       json
@@ -93,7 +93,8 @@ module Mautic
     private
 
     def try_to_refresh_and_parse(response)
-      raise Mautic::TokenExpiredError.new(response) if @try_to_refresh
+      raise Mautic::TokenExpiredError, response if @try_to_refresh
+
       @try_to_refresh = true
       refresh!
       request(*@last_request)
