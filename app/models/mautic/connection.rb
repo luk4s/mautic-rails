@@ -68,29 +68,31 @@ module Mautic
       when 400
         raise Mautic::ValidationError, response
       when 401
-        json = try_to_refresh_and_parse(response)
+        try_to_refresh_and_parse(response)
       when 404
         raise Mautic::RecordNotFound, response
       when 200, 201
-        json = JSON.parse(response.body) rescue {}
-        Array(json['errors']).each do |error|
-          case error['code'].to_i
-          when 401
-            json = try_to_refresh_and_parse(response)
-          when 404
-            raise Mautic::RecordNotFound, response
-          else
-            raise Mautic::RequestError, response
-          end
-        end
+        handle_success_response response
       else
         raise Mautic::RequestError, response
+      end
+    end
+
+    def handle_success_response(response)
+      json = JSON.parse(response.body) rescue {}
+      Array(json['errors']).each do |error|
+        case error['code'].to_i
+        when 401
+          json = try_to_refresh_and_parse(response)
+        when 404
+          raise Mautic::RecordNotFound, response
+        else
+          raise Mautic::RequestError, response
+        end
       end
 
       json
     end
-
-    private
 
     def try_to_refresh_and_parse(response)
       raise Mautic::TokenExpiredError, response if @try_to_refresh
