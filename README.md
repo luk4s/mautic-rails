@@ -1,4 +1,7 @@
-# Mautic rails 
+# Mautic rails
+[![Maintainability](https://api.codeclimate.com/v1/badges/c8cd605b5e021fb841d1/maintainability)](https://codeclimate.com/github/luk4s/mautic-rails/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c8cd605b5e021fb841d1/test_coverage)](https://codeclimate.com/github/luk4s/mautic-rails/test_coverage)
+ 
 RoR helper / wrapper for Mautic API and forms
 
 *Rails 4.2.8+, 5.1+ compatible*
