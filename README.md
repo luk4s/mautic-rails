@@ -93,6 +93,11 @@ Or install it yourself as:
 $ gem install mautic
 ```
 
+Copy the mautic rails engine migrations into your app:
+```bash
+$ bundle exec rake mautic:install:migrations
+```
+ 
 ## Configuration
 
 add to `config/initializers/mautic.rb`:
