@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'oauth2', '~> 1.4'
   s.add_dependency 'rest-client', '~> 2.0'
 
-  s.add_development_dependency 'sqlite3', '~> 1.3.6'
+  s.add_development_dependency 'sqlite3', '~> 1.4'
   s.add_development_dependency('rspec-rails', '~> 3.7')
   s.add_development_dependency('factory_bot_rails', '~> 4.8')
   s.add_development_dependency('database_cleaner', '~> 1.6')
