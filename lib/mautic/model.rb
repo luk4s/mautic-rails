@@ -59,7 +59,7 @@ module Mautic
     def update(force = false)
       return false if changes.blank?
       begin
-        json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_h })
+        json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_mautic })
         self.attributes = json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
@@ -71,7 +71,7 @@ module Mautic
 
     def create
       begin
-        json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", { body: to_h })
+        json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", { body: to_mautic })
         self.attributes = json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
@@ -103,6 +103,12 @@ module Mautic
       hash.each_pair do |k, v|
         k = k.to_sym
         @table[k] = v
+      end
+    end
+
+    def to_mautic
+      @table.each_with_object({}) do |(key,val), mem|
+        mem[key] = val.is_a?(Array) ? val.join("|") : val
       end
     end
 

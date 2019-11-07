@@ -5,18 +5,62 @@
 RoR helper / wrapper for Mautic API and forms
 
 *Rails 4.2.8+, 5.1+ compatible*
-## Usage
-### Gem provides API connection to your Mautic(s)
-  1. Create mautic connection
-  2. Authorize it
-      
-      In mautic you need add API oauth2 login.
-      For URI callback allow:
-      ```
-      http://localhost:3000/mautic/connections/:ID/oauth2
-      ```
-      ID = is your Mautic::Connection ID
+
+## Installation
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'mautic', '~> 2.3'
+```
+
+And then execute:
+```bash
+$ bundle
+```
+Also you need migrate database:
+```bash
+$ rails db:migrate
+```
+
+## Configuration
+
+add to `config/initializers/mautic.rb`:
+```ruby
+Mautic.configure do |config|
+  # This is for oauth handshake token url. I need to know where your app listen
+  config.base_url = "https://my-rails-app.com"
+  # OR it can be Proc 
+  # *optional* This is your default mautic URL - used in form helper 
+  config.mautic_url = "https://mautic.my.app"
+end
+```
+
+add to `config/routes.rb`
+```ruby
+mount Mautic::Engine => "/mautic"
+```
+### Create mautic connection
   
+1. In your mautic, create new
+2. Got to `/your-mount-point/connections`
+3. Create new connection - enter URL to your mautic
+4. Copy `callback url` then go to you mautic
+
+      > In mautic you need add API oauth2 login.
+
+      > ```
+      > http://localhost:3000/mautic/connections/:ID/oauth2
+      > ```
+      > ID = is your Mautic::Connection ID
+          
+5. Create new **Oauth2** API connections. Use `callback url` from previous step and copy `key` and `secret` to form in your app
+6. Update and use `Authorize`  button for handshake
+
+> For example of integration check https://github.com/luk4s/redmine_mautic
+      
+     
+## Usage
+
    Find connection which you want to use:
   ```ruby
   m = Mautic::Connection.last
@@ -75,43 +119,6 @@ Receive webhook from mautic, parse it and prepare for use.
   
           post "webhook/:mautic_id", action: "webhook", on: :collection
           
-
-## Installation
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'mautic', '~>0.1'
-```
-
-And then execute:
-```bash
-$ bundle
-```
-
-Or install it yourself as:
-```bash
-$ gem install mautic
-```
-
-## Configuration
-
-add to `config/initializers/mautic.rb`:
-```ruby
-Mautic.configure do |config|
-  # This is for oauth handshake token url. I need to know where your app listen
-  config.base_url = "https://my-rails-app.com"
-  # OR it can be Proc 
-  # *optional* This is your default mautic URL - used in form helper 
-  config.mautic_url = "https://mautic.my.app"
-end
-```
-
-add to `config/routes.rb`
-```ruby
-mount Mautic::Engine => "/mautic"
-
-```
-
 ## Contributing
 Ideas and pull requests are welcome!
 

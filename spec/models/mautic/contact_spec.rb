@@ -177,6 +177,12 @@ module Mautic
         expect(mautic_contact.events).to be_a Proxy
       end
 
+      it "#to_mautic" do
+        mautic_contact.multiple_cf = %w[a b]
+        mautic_contact.nil_value = nil
+        expect(mautic_contact.to_mautic).to include multiple_cf: "a|b", nil_value: nil
+      end
+
     end
 
   end

@@ -1,13 +1,13 @@
-<%#= form_with(model: mautic_connection.becomes(Mautic::Connection), local: true) do |form| %>
 <%= form_for(mautic_connection.becomes(Mautic::Connection)) do |form| %>
   <% if mautic_connection.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(mautic_connection.errors.count, "error") %> prohibited this mautic_connection from being saved:</h2>
+      <h2><%= pluralize(mautic_connection.errors.count, "error") %> prohibited this mautic_connection from being
+        saved:</h2>
 
       <ul>
-      <% mautic_connection.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% mautic_connection.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
@@ -21,17 +21,23 @@
     <%= form.label :url %>
     <%= form.text_field :url, id: :mautic_connection_url %>
   </div>
+  <% if form.object.persisted? %>
+    <div class="field">
+      <label>Now generate pair of tokens with this callback url:</label>
+      <pre><%= @mautic_connection.send :callback_url %></pre>
+    </div>
 
-  <div class="field">
-    <%= form.label :client_id %>
-    <%= form.text_field :client_id, id: :mautic_connection_client_id %>
-  </div>
+    <div class="field">
+      <%= form.label :client_id %>
+      <%= form.text_field :client_id, id: :mautic_connection_client_id %>
+    </div>
 
-  <div class="field">
-    <%= form.label :secret %>
-    <%= form.text_field :secret, id: :mautic_connection_secret %>
-  </div>
+    <div class="field">
+      <%= form.label :secret %>
+      <%= form.text_field :secret, id: :mautic_connection_secret %>
+    </div>
 
+  <% end %>
   <div class="actions">
     <%= form.submit %>
   </div>

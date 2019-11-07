@@ -5,8 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.3.3] - 2019-11-07
 ### Added
 - enable travis
+### Changed
+- improve readme.md for more detail setup instruction (#9)
+### Fixed
+- mautic multiple field format
 ## [2.3.2] - 2019-03-31
 ### Added
 - this file
