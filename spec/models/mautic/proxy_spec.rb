@@ -293,5 +293,11 @@ module Mautic
       end
     end
 
+    context 'tags' do
+      it 'should return proxy' do
+        expect(oauth2.tags).to be_a Proxy
+      end
+    end
+
   end
 end

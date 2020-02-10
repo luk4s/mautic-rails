@@ -11,12 +11,23 @@ module Mautic
 
   class RequestError < StandardError
 
-    attr_reader :response, :errors
+    attr_reader :response, :errors, :request_url
 
     def initialize(response, message = nil)
       @errors ||= []
       @response = response
-      json_body = JSON.parse(response.body) rescue {}
+      @request_url = response.response&.env&.url
+      body = if response.body.start_with? "<!DOCTYPE html>"
+               response.body.split("\n").last
+             else
+               response.body
+             end
+
+      json_body = begin
+                    JSON.parse(body)
+                  rescue JSON::ParserError
+                    { "errors" => [{ "code" => response.status, "message" => body }] }
+                  end
       message ||= Array(json_body['errors']).collect do |error|
         msg = error['code'].to_s
         msg << " (#{error['type']}):" if error['type']
@@ -25,7 +36,7 @@ module Mautic
         msg
       end.join(', ')
 
-      super(message)
+      super("#{@request_url} => #{message}")
     end
 
   end
@@ -37,7 +48,11 @@ module Mautic
 
     def initialize(response, message = nil)
       @response = response
-      json_body = JSON.parse(response.body) rescue {}
+      json_body = begin
+                    JSON.parse(response.body)
+                  rescue ParseError
+                    {}
+                  end
       @errors = Array(json_body['errors']).inject({}) { |mem, var| mem.merge!(var['details']); mem }
       message ||= @errors.collect { |field, msg| "#{field}: #{msg.join(', ')}" }.join('; ')
       super(response, message)

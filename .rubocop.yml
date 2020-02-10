@@ -36,5 +36,5 @@ Style/SymbolArray:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
   # Enabled: false

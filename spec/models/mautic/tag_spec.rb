@@ -17,6 +17,12 @@ module Mautic
       it '#name' do
         expect(subject.name).to eq "tagA"
       end
+
+      it '#name=' do
+        expect(subject.name).to eq "tagA"
+        subject.name = "XX"
+        expect(subject.name).to eq "XX"
+      end
     end
   end
 end

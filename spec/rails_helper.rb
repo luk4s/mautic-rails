@@ -1,6 +1,8 @@
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter "/spec/"
+end
 
 require File.expand_path("../dummy/config/environment.rb", __FILE__)
 # Prevent database truncation if the environment is production
