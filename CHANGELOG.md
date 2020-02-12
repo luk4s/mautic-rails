@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.3.5] - 2020-02-12
+### Added
+- Do Not Contact implementation
 ## [2.3.4] - 2020-02-10
 ### Changed
 - Mautic 500 error response contains mixed HTML and json (https://github.com/mautic/mautic/issues/8406)

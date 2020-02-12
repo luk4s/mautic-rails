@@ -52,14 +52,14 @@ module Mautic
         data["contact"]["fields"].delete("all")
         expect(data["contact"]["fields"]).not_to include "all"
 
-        stub_request(:get, "#{oauth2.url}/api/contacts/47")
+        stub_request(:get, "#{oauth2.url}/api/contacts/1")
           .and_return({
                         status: 200,
                         body: data.to_json,
                         headers: { 'Content-Type' => 'application/json' }
                       })
-        contact = oauth2.contacts.find(47)
-        expect(contact.id).to eq 47
+        contact = oauth2.contacts.find(1)
+        expect(contact.id).to eq 1
         expect(contact.first_name).to eq 'Jim'
         expect(contact.twitter).to eq 'jimcontact'
       end

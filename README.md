@@ -88,6 +88,18 @@ mount Mautic::Engine => "/mautic"
   contact.save # => false
   contact.errors # => [{"code"=>400, "message"=>"email: This field is required.", "details"=>{"email"=>["This field is required."]}}]
   ```
+  Do not contact
+  ```ruby
+  contact.do_not_contact? # => false
+  contact.do_not_contact! message: "Some reason"
+  contact.do_not_contact? # => true
+  ```
+  Remove do not contact
+  ```ruby
+  contact.do_not_contact? # => true
+  contact.remove_do_not_contact!
+  contact.do_not_contact? # => false
+  ```
   Of course you can use more than contact: `assets`, `emails`, `companies`, `forms`, `points` ...
 ### Gem provides simple Mautic form submit
 There are two options of usage:

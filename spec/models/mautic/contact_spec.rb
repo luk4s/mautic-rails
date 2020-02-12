@@ -18,10 +18,10 @@ module Mautic
         stub = stub_request(:post, "#{oauth2.url}/api/contacts/new").
           with(body: hash_including(attributes),
                headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }).
-          to_return({ status: 200,
-                      body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
-                      headers: { 'Content-Type' => 'application/json' }
-                    })
+          to_return(status: 200,
+                    body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
+                    headers: { 'Content-Type' => 'application/json' }
+          )
         contact = described_class.new(oauth2, attributes)
         contact = oauth2.contacts.new(attributes)
         contact.lastname = 'Lukas'
@@ -35,10 +35,10 @@ module Mautic
         stub = stub_request(:post, "#{oauth2.url}/api/contacts/new").
           with(body: hash_including(attributes),
                headers: { 'Content-Type' => 'application/x-www-form-urlencoded' }).
-          to_return({ status: 400,
-                      body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
-                      headers: { 'Content-Type' => 'application/json' }
-                    })
+          to_return(status: 400,
+                    body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
+                    headers: { 'Content-Type' => 'application/json' }
+          )
         contact = described_class.new(oauth2, attributes)
         contact = oauth2.contacts.new(attributes)
         contact.lastname = 'Lukas'
@@ -52,18 +52,18 @@ module Mautic
     context '#destroy' do
       it 'exists record' do
         stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
-                 .and_return({
-                               status: 200,
-                               body: { contact: { id: 1 } }.to_json,
-                               headers: { 'Content-Type' => 'application/json' }
-                             })
+                 .and_return(
+                   status: 200,
+                   body: { contact: { id: 1 } }.to_json,
+                   headers: { 'Content-Type' => 'application/json' }
+                 )
 
         destroy = stub_request(:delete, "#{oauth2.url}/api/contacts/1/delete")
-                    .and_return({
-                                  status: 200,
-                                  body: '{}',
-                                  headers: { 'Content-Type' => 'application/json' }
-                                })
+                    .and_return(
+                      status: 200,
+                      body: '{}',
+                      headers: { 'Content-Type' => 'application/json' }
+                    )
         contact = described_class.in(oauth2).find(1)
         expect(stub).to have_been_made
         expect(contact.destroy).to eq true
@@ -72,18 +72,18 @@ module Mautic
 
       it 'record not found' do
         stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
-                 .and_return({
-                               status: 200,
-                               body: { contact: { id: 1 } }.to_json,
-                               headers: { 'Content-Type' => 'application/json' }
-                             })
+                 .and_return(
+                   status: 200,
+                   body: { contact: { id: 1 } }.to_json,
+                   headers: { 'Content-Type' => 'application/json' }
+                 )
 
         destroy = stub_request(:delete, "#{oauth2.url}/api/contacts/1/delete")
-                    .and_return({
-                                  status: 404,
-                                  body: { errors: [{ code: 404, message: 'not found' }] }.to_json,
-                                  headers: { 'Content-Type' => 'application/json' }
-                                })
+                    .and_return(
+                      status: 404,
+                      body: { errors: [{ code: 404, message: 'not found' }] }.to_json,
+                      headers: { 'Content-Type' => 'application/json' }
+                    )
         contact = described_class.in(oauth2).find(1)
         expect(stub).to have_been_made
         expect(contact.destroy).to eq false
@@ -94,11 +94,11 @@ module Mautic
 
     it '#attributes' do
       _stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
-                .and_return({
-                              status: 200,
-                              body: contact.to_json,
-                              headers: { 'Content-Type' => 'application/json' }
-                            })
+                .and_return(
+                  status: 200,
+                  body: contact.to_json,
+                  headers: { 'Content-Type' => 'application/json' }
+                )
       contact = described_class.in(oauth2).find(1)
       expect(contact.attributes).to include *%i(created_at title firstname)
     end
@@ -107,21 +107,21 @@ module Mautic
 
       it 'invalid' do
         stub = stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit")
-                 .and_return({
-                               status: 400,
-                               body: { "errors" =>
-                                         [
-                                           { "code" => 400,
-                                             "message" => "email: Musí být zadán platný e-mail., country: Tato hodnota není platná.",
-                                             "details" => {
-                                               "email" => ["Musí být zadán platný e-mail."],
-                                               "country" => ["Tato hodnota není platná."]
-                                             }
-                                           }]
-                               }.to_json,
-                               headers: { 'Content-Type' => 'application/json' }
-                             })
-        contact = described_class.new(oauth2, { id: 1 })
+                 .and_return(
+                   status: 400,
+                   body: { "errors" =>
+                             [
+                               { "code" => 400,
+                                 "message" => "email: Musí být zadán platný e-mail., country: Tato hodnota není platná.",
+                                 "details" => {
+                                   "email" => ["Musí být zadán platný e-mail."],
+                                   "country" => ["Tato hodnota není platná."]
+                                 }
+                               }]
+                   }.to_json,
+                   headers: { 'Content-Type' => 'application/json' }
+                 )
+        contact = described_class.new(oauth2, id: 1)
         contact.attributes = { email: 'null', country: 'null' }
         expect { contact.update }.not_to raise_exception
         expect(stub).to have_been_made
@@ -134,11 +134,11 @@ module Mautic
 
       let(:mautic_contact) do
         _stub = stub_request(:get, "#{oauth2.url}/api/contacts/1")
-                  .and_return({
-                                status: 200,
-                                body: contact.to_json,
-                                headers: { 'Content-Type' => 'application/json' }
-                              })
+                  .and_return(
+                    status: 200,
+                    body: contact.to_json,
+                    headers: { 'Content-Type' => 'application/json' }
+                  )
         described_class.in(oauth2).find(1)
       end
 
@@ -169,7 +169,7 @@ module Mautic
         end
 
         it 'include tag with name ' do
-          is_expected.to include(Mautic::Tag.new(oauth2, { id: 1, tag: "important" }))
+          is_expected.to include(Mautic::Tag.new(oauth2, id: 1, tag: "important"))
         end
       end
 
@@ -183,7 +183,120 @@ module Mautic
         expect(mautic_contact.to_mautic).to include multiple_cf: "a|b", nil_value: nil
       end
 
+      context 'do not contact' do
+        describe '#do_not_contact' do
+          subject { mautic_contact.do_not_contact }
+          it do
+            is_expected.to be_a Array
+            expect(subject[0]).to eq bounced: "Invalid"
+          end
+        end
+
+        describe '#bounced?' do
+          it { expect(mautic_contact.bounced?).to eq true }
+        end
+
+        describe '#unsubscribed?' do
+          it { expect(mautic_contact.unsubscribed?).to eq false }
+        end
+
+        describe '#do_not_contact?' do
+          it { expect(mautic_contact.do_not_contact?).to eq true }
+        end
+
+        describe 'do_not_contact!' do
+          subject { mautic_contact.do_not_contact!(comments: "bother me") }
+
+          it "failed" do
+            stub_request(:post, "#{oauth2.url}/api/contacts/1/dnc/email/add")
+              .and_return(
+                status: 400,
+                body: {
+                  "errors" =>
+                    [
+                      { "code" => 400,
+                        "message" => "email: Musí být zadán platný e-mail., country: Tato hodnota není platná.",
+                        "details" => {
+                          "email" => ["Musí být zadán platný e-mail."],
+                          "country" => ["Tato hodnota není platná."]
+                        }
+                      }]
+                }.to_json,
+                headers: { 'Content-Type' => 'application/json' }
+              )
+            is_expected.to eq false
+          end
+
+          context "reload do_not_contact" do
+            let(:contact) do
+              json = JSON.parse(file_fixture("contact.json").read)
+              json["contact"].delete("doNotContact")
+              json
+            end
+            it do
+              dnc_response = JSON.parse(file_fixture("contact.json").read)
+              dnc_response["contact"]["doNotContact"] = [{ "id" => 666, "reason" => 3, "comments" => "Dont like him.", "channel" => "web", "channelId" => 9 }]
+              expect(mautic_contact.dnc?).to eq false
+              stub_request(:post, "#{oauth2.url}/api/contacts/1/dnc/email/add")
+                .and_return(
+                  status: 200,
+                  body: dnc_response.to_json,
+                  headers: { 'Content-Type' => 'application/json' }
+                )
+              is_expected.to eq true
+              expect(mautic_contact.dnc?).to eq true
+              expect(mautic_contact.unsubscribed?).to eq false
+              expect(mautic_contact.bounced?).to eq false
+            end
+          end
+        end
+
+        describe 'remove_do_not_contact!' do
+          subject { mautic_contact.remove_do_not_contact! }
+
+          it "failed" do
+            stub_request(:post, "#{oauth2.url}/api/contacts/1/dnc/email/remove")
+              .and_return(
+                status: 400,
+                body: {
+                  "errors" =>
+                    [
+                      { "code" => 400,
+                        "message" => "email: Musí být zadán platný e-mail., country: Tato hodnota není platná.",
+                        "details" => {
+                          "email" => ["Musí být zadán platný e-mail."],
+                          "country" => ["Tato hodnota není platná."]
+                        }
+                      }]
+                }.to_json,
+                headers: { 'Content-Type' => 'application/json' }
+              )
+            is_expected.to eq false
+          end
+
+          context "reload do_not_contact" do
+            let(:contact_with_do_not_contact) do
+              json = JSON.parse(file_fixture("contact.json").read)
+              json["contact"].delete("doNotContact")
+              json
+            end
+            it do
+              expect(mautic_contact.dnc?).to eq true
+              stub_request(:post, "#{oauth2.url}/api/contacts/1/dnc/email/remove")
+                .and_return(
+                  status: 200,
+                  body: contact_with_do_not_contact.to_json,
+                  headers: { 'Content-Type' => 'application/json' }
+                )
+              is_expected.to eq true
+              expect(mautic_contact.dnc?).to eq false
+            end
+          end
+        end
+
+      end
     end
+
 
   end
 
