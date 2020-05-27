@@ -295,8 +295,44 @@ module Mautic
         end
 
       end
-    end
 
+      context "owner" do
+        describe "#owner" do
+          subject { mautic_contact.owner }
+          it "should be hash" do
+            is_expected.to be_a Hash
+          end
+          it "has keys id, firstName, lastName" do
+            is_expected.to include *%w[id firstName lastName]
+          end
+        end
+
+        describe "#owner=" do
+          it do
+            mautic_contact.owner = { id: 12 }
+          end
+          it "wrong type raise ArgumentError" do
+            expect { mautic_contact.owner = spy }.to raise_error ArgumentError
+          end
+        end
+
+        it "owner update" do
+          mautic_contact.owner_id = 77
+
+          stub = stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit").with(body: hash_including("owner" => "77"))
+                   .and_return(
+                     status: 200,
+                     body: { contact: { owner: { id: 77, firstName: "Tik", lastName: "Tak" } } }.to_json,
+                     headers: { 'Content-Type' => 'application/json' }
+                   )
+
+          mautic_contact.save
+          expect(stub).to have_been_made
+
+          expect(mautic_contact.owner).to include "id" => 77, "firstName" => "Tik"
+        end
+      end
+    end
 
   end
 

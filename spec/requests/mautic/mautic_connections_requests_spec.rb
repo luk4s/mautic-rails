@@ -86,7 +86,7 @@ module Mautic
           token_type: 'bearer',
           access_token: access_token,
           refresh_token: refresh_token,
-          expires_at: 1509197736
+          expires_at: Date.tomorrow
         }.to_param, headers: {'Content-Type'=>'application/x-www-form-urlencoded'})
 
 

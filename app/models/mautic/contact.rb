@@ -12,12 +12,39 @@ module Mautic
       "#{firstname} #{lastname}"
     end
 
+    # @param [Hash] hash
+    # option hash [Integer] :id
+    # option hash [String] :firstName
+    # option hash [String] :lastName
+    def owner=(hash)
+      raise ArgumentError, "must be a hash !" unless hash.is_a?(Hash)
+
+      @table["owner"] = hash["id"]
+      @owner = hash
+    end
+
+    # @return [Hash]
+    # @example {id: 12, firstName: "Joe", lastName: "Doe"}
+    def owner
+      @owner || {}
+    end
+
+    # Assign mautic User ID as owner - for example for update author of contact
+    # @see https://developer.mautic.org/#edit-contact set owner
+    # @param [Integer] int
+    def owner_id=(int)
+      @table["owner"] = int
+    end
+
     def assign_attributes(source = nil)
       super
+
       if source
+        self.owner = source['owner'] || {}
         self.attributes = {
           tags: (source['tags'] || []).collect { |t| Mautic::Tag.new(@connection, t) }.sort_by(&:name),
           doNotContact: source['doNotContact'] || [],
+          owner: owner['id'],
         }
       end
     end
@@ -32,6 +59,7 @@ module Mautic
     def do_not_contact?
       doNotContact.present?
     end
+
     alias dnc? do_not_contact?
 
     # @return [Array[Hash]]
@@ -64,6 +92,7 @@ module Mautic
 
       self.errors.blank?
     end
+
     alias add_dnc do_not_contact!
 
     def remove_do_not_contact!
@@ -77,6 +106,7 @@ module Mautic
 
       self.errors.blank?
     end
+
     alias remove_dnc remove_do_not_contact!
 
     # !endgroup

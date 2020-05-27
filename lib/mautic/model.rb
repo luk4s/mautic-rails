@@ -58,9 +58,10 @@ module Mautic
 
     def update(force = false)
       return false if changes.blank?
+
       begin
         json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_mautic })
-        self.attributes = json[endpoint.singularize]
+        assign_attributes json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
@@ -72,7 +73,7 @@ module Mautic
     def create
       begin
         json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", { body: to_mautic })
-        self.attributes = json[endpoint.singularize]
+        assign_attributes json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
