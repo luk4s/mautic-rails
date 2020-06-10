@@ -39,7 +39,6 @@ module Mautic
                     body: { contact: { id: rand(99) }.merge(attributes) }.to_json,
                     headers: { 'Content-Type' => 'application/json' }
           )
-        contact = described_class.new(oauth2, attributes)
         contact = oauth2.contacts.new(attributes)
         contact.lastname = 'Lukas'
         expect(contact.save).to eq true
@@ -107,6 +106,7 @@ module Mautic
 
       it 'invalid' do
         stub = stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit")
+                 .with(body: hash_including(email: "null", country: "null"))
                  .and_return(
                    status: 400,
                    body: { "errors" =>
@@ -127,6 +127,18 @@ module Mautic
         expect(stub).to have_been_made
         expect(contact.errors).to be_kind_of Hash
         expect(contact.errors.keys).to include *%w(email country)
+      end
+
+    end
+
+    describe "#update_columns" do
+      it do
+        stub = stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit").with(body: { owner: "3" })
+        contact = described_class.new(oauth2, id: 1)
+        contact.attributes = { email: 'null', country: 'null' }
+        expect { contact.update_columns(owner: 3) }.not_to raise_exception
+        expect(stub).to have_been_made
+        expect(contact.errors).to be_blank
       end
     end
 

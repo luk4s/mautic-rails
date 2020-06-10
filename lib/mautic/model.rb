@@ -38,6 +38,7 @@ module Mautic
     end
 
     attr_reader :connection
+    attr_accessor :errors
 
     # @param [Mautic::Connection] connection
     def initialize(connection, hash = nil)
@@ -60,7 +61,7 @@ module Mautic
       return false if changes.blank?
 
       begin
-        json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", { body: to_mautic })
+        json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", body: to_mautic)
         assign_attributes json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
@@ -70,9 +71,17 @@ module Mautic
       self.errors.blank?
     end
 
+    def update_columns(attributes = {})
+      json = @connection.request(:patch, "api/#{endpoint}/#{id}/edit", body: to_mautic(attributes))
+      assign_attributes json[endpoint.singularize]
+      clear_changes
+    rescue ValidationError => e
+      self.errors = e.errors
+    end
+
     def create
       begin
-        json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", { body: to_mautic })
+        json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", body: to_mautic)
         assign_attributes json[endpoint.singularize]
         clear_changes
       rescue ValidationError => e
@@ -107,8 +116,8 @@ module Mautic
       end
     end
 
-    def to_mautic
-      @table.each_with_object({}) do |(key,val), mem|
+    def to_mautic(data = @table)
+      data.each_with_object({}) do |(key, val), mem|
         mem[key] = val.is_a?(Array) ? val.join("|") : val
       end
     end
