@@ -19,7 +19,7 @@ module Mautic
     def owner=(hash)
       raise ArgumentError, "must be a hash !" unless hash.is_a?(Hash)
 
-      @table["owner"] = hash["id"]
+      @table[:owner] = hash["id"]
       @owner = hash
     end
 
@@ -33,7 +33,7 @@ module Mautic
     # @see https://developer.mautic.org/#edit-contact set owner
     # @param [Integer] int
     def owner_id=(int)
-      @table["owner"] = int
+      @table[:owner] = int
     end
 
     def assign_attributes(source = nil)
