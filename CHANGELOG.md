@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## [2.3.8] - 2020-06-24
 ### Fixed
-- update contacts with tags should be array of their names
+- contacts tags should be array of their names
+### Removed
+- update contact tags in mautic
 ## [2.3.7] - 2020-06-10
 ### Fixed
 - Model attributes should be Symbols

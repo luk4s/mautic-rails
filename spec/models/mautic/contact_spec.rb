@@ -185,7 +185,7 @@ module Mautic
         end
 
         it "to_mautic should be values" do
-          expect(mautic_contact.to_mautic).to include tags: "important"
+          expect(mautic_contact.to_mautic).not_to include :tags
         end
       end
 

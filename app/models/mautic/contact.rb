@@ -51,6 +51,7 @@ module Mautic
 
     def to_mautic(data = @table)
       data.delete(:doNotContact)
+      data.delete(:tags)
       super(data)
     end
 
