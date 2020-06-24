@@ -49,6 +49,11 @@ module Mautic
       end
     end
 
+    def to_mautic(data = @table)
+      data.delete(:doNotContact)
+      super(data)
+    end
+
     def events
       @proxy_events ||= Proxy.new(connection, "contacts/#{id}/events", klass: "Mautic::Event")
     end

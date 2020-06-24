@@ -6,6 +6,10 @@ module Mautic
       tag
     end
 
+    def to_s
+      name
+    end
+
     def name=(name)
       self.tag = name
     end

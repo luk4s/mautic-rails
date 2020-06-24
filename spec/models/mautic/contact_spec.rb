@@ -183,6 +183,10 @@ module Mautic
         it 'include tag with name ' do
           is_expected.to include(Mautic::Tag.new(oauth2, id: 1, tag: "important"))
         end
+
+        it "to_mautic should be values" do
+          expect(mautic_contact.to_mautic).to include tags: "important"
+        end
       end
 
       it "#events" do
