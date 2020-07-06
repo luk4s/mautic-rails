@@ -85,12 +85,12 @@ module Mautic
     # ==--==--==--==--
 
     def authorize
-      redirect_to @mautic_connection.authorize
+      redirect_to @mautic_connection.authorize(self)
     end
 
     def oauth2
       begin
-        response = @mautic_connection.get_code(params.require(:code))
+        response = @mautic_connection.get_code(params.require(:code), self)
         @mautic_connection.update(token: response.token, refresh_token: response.refresh_token)
         return render plain: t('mautic.text_mautic_authorize_successfully')
       rescue OAuth2::Error => e

@@ -10,13 +10,9 @@ Metrics/AbcSize:
   Enabled: false
 Metrics/BlockLength:
   Enabled: false
-Metrics/LineLength:
-  Enabled: false
 Metrics/MethodLength:
   Enabled: false
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
 Style/Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
