@@ -43,7 +43,10 @@ add to `config/routes.rb`
 ```ruby
 mount Mautic::Engine => "/mautic"
 ```
-note: You need to realize, that Mautic::Connections controller need some user verification. By default all requests are denied, but you can change this by set `Mautic.config.authorize_mautic_connections` proc.
+note: Make sure that you have some user authorization. There is builtin mechanism, in `Mautic.config.authorize_mautic_connections` = which return `false` to prevent all access by default (see: app/controllers/mautic/connections_controller.rb:3). For change this, you need add to `config/initializers/mautic.rb`:
+```ruby
+Mautic.config.authorize_mautic_connections = ->(controller) { current_user.admin? }
+```
 
 OR use your own controller, by including concern 
 ```ruby
