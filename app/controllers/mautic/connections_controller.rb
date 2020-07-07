@@ -6,8 +6,6 @@ module Mautic
     private
 
     def authorize_me
-      Mautic.config.authorize_mautic_connections.call(self)
-
       unless Mautic.config.authorize_mautic_connections.call(self)
         logger.warn "Mautic::ConnectionsController unauthorized, you can change this by Mautic.config.authorize_mautic_connections. See: lib/mautic.rb:77"
         render plain: "Unauthorized", status: 403
