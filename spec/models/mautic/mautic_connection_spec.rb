@@ -10,11 +10,11 @@ module Mautic
       end
 
       it '#authorize' do
-        expect { conn.authorize }.to raise_exception NotImplementedError
+        expect { conn.authorize(double) }.to raise_exception NotImplementedError
       end
 
       it '#get_code' do
-        expect { conn.get_code(SecureRandom.hex 4) }.to raise_exception NotImplementedError
+        expect { conn.get_code(SecureRandom.hex(4), double) }.to raise_exception NotImplementedError
       end
 
       it '#connection' do
@@ -30,7 +30,7 @@ module Mautic
     end
 
     describe '#callback_url' do
-      subject { described_class.new.send(:callback_url) }
+      subject { described_class.new.send(:callback_url, double) }
       it 'default' do
         is_expected.to be_a URI
       end

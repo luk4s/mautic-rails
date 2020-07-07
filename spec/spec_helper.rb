@@ -46,6 +46,9 @@ RSpec.configure do |config|
 
   config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+    Mautic.configure do |config|
+      config.authorize_mautic_connections = ->(controller) { true }
+    end
   end
 
   config.before(:each) do

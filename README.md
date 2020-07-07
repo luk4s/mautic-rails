@@ -32,13 +32,40 @@ Mautic.configure do |config|
   # OR it can be Proc 
   # *optional* This is your default mautic URL - used in form helper 
   config.mautic_url = "https://mautic.my.app"
+  # Set authorize condition for manage Mautic::Connections
+  config.authorize_mautic_connections = ->(controller) { false }
 end
 ```
+### Manage mautic connections
+You can use builtin Mautic:ConnectionsController:
 
 add to `config/routes.rb`
 ```ruby
 mount Mautic::Engine => "/mautic"
 ```
+note: Make sure that you have some user authorization. There is builtin mechanism, in `Mautic.config.authorize_mautic_connections` = which return `false` to prevent all access by default (see: app/controllers/mautic/connections_controller.rb:3). For change this, you need add to `config/initializers/mautic.rb`:
+```ruby
+Mautic.config.authorize_mautic_connections = ->(controller) { current_user.admin? }
+```
+
+OR use your own controller, by including concern 
+```ruby
+class MyOwnController < ApplicationController
+  before_action :authorize_user
+
+  include Mautic::ConnectionsControllerConcern
+end
+```
+Concern require additional routes (authorize and oauth2) in `routes.rb`
+```ruby
+resources :my_resources do
+  member do
+    get :authorize
+    get :oauth2
+  end
+end
+```
+
 ### Create mautic connection
   
 1. In your mautic, create new

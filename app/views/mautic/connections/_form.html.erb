@@ -24,7 +24,7 @@
   <% if form.object.persisted? %>
     <div class="field">
       <label>Now generate pair of tokens with this callback url:</label>
-      <pre><%= @mautic_connection.send :callback_url %></pre>
+      <pre><%= @mautic_connection.send :callback_url, controller %></pre>
     </div>
 
     <div class="field">

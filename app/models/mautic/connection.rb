@@ -17,11 +17,11 @@ module Mautic
       raise NotImplementedError
     end
 
-    def authorize
+    def authorize(context)
       raise NotImplementedError
     end
 
-    def get_code(code)
+    def get_code(code, context)
       raise NotImplementedError
     end
 
@@ -55,7 +55,7 @@ module Mautic
 
     private
 
-    def callback_url
+    def callback_url(context)
       if (conf = Mautic.config.base_url).is_a?(Proc)
         conf = conf.call(self)
       end

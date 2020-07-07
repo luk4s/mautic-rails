@@ -3,8 +3,6 @@ Mautic::Engine.routes.draw do
     member do
       get :authorize
       get :oauth2
-
     end
-    # post "webhook/:mautic_connection_id", action: "webhook", on: :collection
   end
 end

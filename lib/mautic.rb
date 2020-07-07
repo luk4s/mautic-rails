@@ -67,10 +67,14 @@ module Mautic
   end
 
   configure do |config|
-    # This is URL your application - its for oauth callbacks
+    # This is URL of your application - its for oauth callbacks
     config.base_url = "http://localhost:3000"
+
     # *optional* This is your default mautic URL - used in form helper
     config.mautic_url = "https://mautic.my.app"
+
+    # Set authorize condition for manage Mautic::Connections
+    config.authorize_mautic_connections = ->(controller) { false }
   end
   # Your code goes here...
 
