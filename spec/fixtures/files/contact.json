@@ -37,6 +37,10 @@
       {
         "id": 1,
         "tag": "important"
+      },
+      {
+        "id": 2,
+        "tag": "another tag"
       }
     ],
     "doNotContact": [

@@ -39,6 +39,7 @@ module Mautic
 
     attr_reader :connection
     attr_accessor :errors
+    attr_writer :changed
 
     # @param [Mautic::Connection] connection
     def initialize(connection, hash = nil)
@@ -58,7 +59,7 @@ module Mautic
     end
 
     def update(force = false)
-      return false if changes.blank?
+      return false unless changed?
 
       begin
         json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", body: to_mautic)
@@ -68,7 +69,7 @@ module Mautic
         self.errors = e.errors
       end
 
-      self.errors.blank?
+      errors.blank?
     end
 
     def update_columns(attributes = {})
@@ -88,7 +89,7 @@ module Mautic
         self.errors = e.errors
       end
 
-      self.errors.blank?
+      errors.blank?
     end
 
     def destroy
@@ -105,6 +106,12 @@ module Mautic
       @table.changes
     end
 
+    def changed?
+      return @changed unless @changed.nil?
+
+      @changed = !changes.empty?
+    end
+
     def attributes
       @table.to_h
     end
@@ -118,13 +125,20 @@ module Mautic
 
     def to_mautic(data = @table)
       data.each_with_object({}) do |(key, val), mem|
-        mem[key] = val.is_a?(Array) ? val.join("|") : val
+        mem[key] = if val.respond_to?(:to_mautic)
+                     val.to_mautic
+                   elsif val.is_a?(Array)
+                     val.join("|")
+                   else
+                     val
+                   end
       end
     end
 
     private
 
     def clear_changes
+      @changed = nil
       @table.instance_variable_set(:@changes, nil)
     end
 
