@@ -51,6 +51,7 @@ module Mautic
       describe "#remove" do
         it "delete tag" do
           expect { subject.remove("tag1") }.to change(subject, :size).from(2).to 1
+          expect(subject.remove("tag1")).to be_nil
         end
         it "#to_mautic include -tag1" do
           expect { subject.remove("tag1") }.to change(subject, :to_mautic).to %w[tag2 -tag1]
