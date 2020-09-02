@@ -41,8 +41,9 @@ module Mautic
 
       if source
         self.owner = source['owner'] || {}
+        tags = (source['tags'] || []).map { |t| Mautic::Tag.new(self, t) }.sort_by(&:name)
         self.attributes = {
-          tags: (source['tags'] || []).collect { |t| Mautic::Tag.new(@connection, t) }.sort_by(&:name),
+          tags: Tag::Collection.new(self, *tags),
           doNotContact: source['doNotContact'] || [],
           owner: owner['id'],
         }
@@ -51,7 +52,6 @@ module Mautic
 
     def to_mautic(data = @table)
       data.delete(:doNotContact)
-      data.delete(:tags)
       super(data)
     end
 
@@ -96,7 +96,7 @@ module Mautic
         self.errors = e.errors
       end
 
-      self.errors.blank?
+      errors.blank?
     end
 
     alias add_dnc do_not_contact!
