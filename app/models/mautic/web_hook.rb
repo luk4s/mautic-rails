@@ -12,7 +12,7 @@ module Mautic
 
     def form_submissions
       @forms ||= Array.wrap(@params.require("mautic.form_on_submit")).collect do |data|
-        p = data.permit(submission: [:id, form: {}, lead: {}, results: {}]).to_h
+        p = data.permit(submission: [:id, :referer, form: {}, lead: {}, results: {}]).to_h
         ::Mautic::Submissions::Form.new(@connection, p["submission"]) if p["submission"]
       end.compact
     end

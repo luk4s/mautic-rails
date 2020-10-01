@@ -23,8 +23,10 @@ RSpec.describe Mautic::Submissions::Form do
   it '#contact' do
     expect(c = subject.contact).to be_a Mautic::Contact
     expect(c.email).to eq "email@formsubmit.com"
+  end
 
-
+  it '#referer' do
+    expect(subject.referer).to eq "http://mautic-gh.com/index_dev.php/s/forms/preview/4"
   end
 
 end

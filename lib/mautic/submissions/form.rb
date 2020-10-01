@@ -30,6 +30,12 @@ module Mautic
       def contact
         @contact ||= @connection.contacts.new(@raw["lead"])
       end
+
+      # @return [String]
+      def referer
+        @raw["referer"].to_s
+      end
+
     end
   end
 end
