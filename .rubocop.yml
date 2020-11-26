@@ -33,6 +33,3 @@ Style/SymbolArray:
   Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded
-Layout/IndentationConsistency:
-  EnforcedStyle: indented_internal_methods
-  # Enabled: false

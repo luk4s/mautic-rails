@@ -9,6 +9,13 @@ module Mautic
 
     routes { Mautic::Engine.routes }
 
+    it "#authorize_me" do
+      Mautic.config.authorize_mautic_connections = ->(controller) { controller.params[:xx] == "1" }
+      get :index
+      expect(response).to have_http_status :forbidden
+      get :index, params: { xx: 1 }
+      expect(response).to have_http_status :ok
+    end
 
     describe "GET #index" do
       it "returns a success response" do

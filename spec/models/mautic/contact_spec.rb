@@ -350,6 +350,48 @@ module Mautic
       end
     end
 
+    describe "#campaigns" do
+      let(:mautic_contact) { described_class.new oauth2, id: 1, firstname: "Test", lastname: "Contact" }
+
+      def stub_with_response(status, hash)
+        stub_request(:get, "#{oauth2.url}/api/contacts/1/campaigns").
+          to_return(status: status,
+                    body: hash.to_json,
+                    headers: { 'Content-Type' => 'application/json' }
+          )
+      end
+
+      it "get list" do
+        body = {
+          total: 1,
+          campaigns: {
+            "1": {
+              id: 1,
+              name: "Welcome Campaign",
+              dateAdded: "2015-07-21T14:11:47-05:00",
+              manuallyRemoved: false,
+              manuallyAdded: false,
+              list_membership: [3]
+            }
+          }
+        }
+        stub = stub_with_response(200, body)
+        expect(mautic_contact.campaigns).to include be_a(Mautic::Campaign)
+        expect(stub).to have_been_made
+      end
+
+      it "list is empty" do
+        stub = stub_with_response(200, { total: 0, campaigns: [] })
+        expect(mautic_contact.campaigns).to eq []
+        expect(stub).to have_been_made
+      end
+
+      it "something wrong" do
+        stub_with_response(500, "Internal Server")
+        expect(mautic_contact.campaigns).to eq []
+      end
+    end
+
   end
 
 end

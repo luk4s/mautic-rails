@@ -117,6 +117,23 @@ module Mautic
 
     # !endgroup
 
+    # @!group Campaigns
+
+    # @return [Array<Mautic::Campaign>]
+    def campaigns
+      return @campaigns if @campaigns
+
+      json = @connection.request(:get, "api/contacts/#{id}/campaigns")
+
+      @campaigns = json["campaigns"].collect do |_campaign_id, campaign_attributes|
+        Mautic::Campaign.new @connection, campaign_attributes
+      end
+    rescue RequestError => _e
+      []
+    end
+
+    # !endgroup
+
     private
 
     def clear_change

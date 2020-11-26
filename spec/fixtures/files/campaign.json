@@ -1,0 +1,37 @@
+{
+  "campaign": {
+    "id": 3,
+    "name": "Email A/B Test",
+    "description": null,
+    "isPublished": true,
+    "publishUp": null,
+    "publishDown": null,
+    "dateAdded": "2015-07-15T15:06:02-05:00",
+    "createdBy": 1,
+    "createdByUser": "Joe Smith",
+    "dateModified": "2015-07-20T13:11:56-05:00",
+    "modifiedBy": 1,
+    "modifiedByUser": "Joe Smith",
+    "category": null,
+    "events": {
+      "28": {
+        "id": 28,
+        "type": "lead.changepoints",
+        "eventType": "action",
+        "name": "Adjust lead points",
+        "description": null,
+        "order": 1,
+        "properties": {
+          "points": 20
+        },
+        "triggerDate": null,
+        "triggerInterval": 1,
+        "triggerIntervalUnit": "d",
+        "triggerMode": "immediate",
+        "children": [],
+        "parent": null,
+        "decisionPath": null
+      }
+    }
+  }
+}
