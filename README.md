@@ -94,11 +94,11 @@ end
   ```
   Get specify contact:
   ```ruby
-  contact = m.contact.find(1) # => #<Mautic::Contact id=1 ...>
+  contact = m.contact.find(1) # => #<Mautic::Contact id=1 ...>
   ```
   Collections of contacts:
   ```ruby
-  m.contacts.where("gmail").each do |contact|
+  m.contacts.where(search: "gmail").each do |contact|
     #<Mautic::Contact id=12 ...>
     #<Mautic::Contact id=21 ...>
     #<Mautic::Contact id=99 ...>
@@ -115,7 +115,7 @@ end
   contact.save # => false
   contact.errors # => [{"code"=>400, "message"=>"email: This field is required.", "details"=>{"email"=>["This field is required."]}}]
   ```
-  Do not contact
+  #### Do not contact
   ```ruby
   contact.do_not_contact? # => false
   contact.do_not_contact! message: "Some reason"
@@ -126,6 +126,18 @@ end
   contact.do_not_contact? # => true
   contact.remove_do_not_contact!
   contact.do_not_contact? # => false
+  ```
+  #### Campaigns
+  list of contacts campaigns (where contact is a member) and remove it from one
+  ```ruby
+  contact.campaigns #=> [Mautic::Campaign, ...]
+  campaign = contact.campaigns.find { |campaign| campaign.name == "Newsletter" }
+  campaign.remove_contact! contact.id
+  ```
+  or add contact back
+  ```ruby
+  campaign = connection.campaigns.where(search: "Newsletter").first
+  campaign.add_contact! contact.id
   ```
   Of course you can use more than contact: `assets`, `emails`, `companies`, `forms`, `points` ...
 ### Gem provides simple Mautic form submit
