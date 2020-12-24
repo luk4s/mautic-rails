@@ -29,4 +29,9 @@ RSpec.describe Mautic::Submissions::Form do
     expect(subject.referer).to eq "http://mautic-gh.com/index_dev.php/s/forms/preview/4"
   end
 
+  it "#results" do
+    expect(subject.results).to be_a Hash
+    expect(subject.results).to include email: "email@formsubmit.com"
+  end
+
 end

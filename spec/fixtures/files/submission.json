@@ -1,0 +1,42 @@
+{
+  "submission": {
+    "id": 1,
+    "ipAddress": {
+      "ip": "127.0.0.1"
+    },
+    "form": {
+      "id": 25,
+      "name": "test",
+      "alias": "test",
+      "category": null
+    },
+    "lead": {
+      "id": 2183,
+      "points": 0,
+      "color": null,
+      "title": null,
+      "firstname": null,
+      "lastname": null,
+      "company": null,
+      "position": null,
+      "email": "test@test.test",
+      "phone": null,
+      "mobile": null,
+      "address1": null,
+      "address2": null,
+      "city": null,
+      "state": null,
+      "zipcode": null,
+      "timezone": null,
+      "country": null
+    },
+    "trackingId": null,
+    "dateSubmitted": "2017-07-17T09:52:29+00:00",
+    "referer": "http:\/\/mautic.dev\/s\/forms\/preview\/25",
+    "page": null,
+    "results": {
+      "form_id": "25",
+      "email": "test@test.test"
+    }
+  }
+}
