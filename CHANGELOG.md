@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## [2.5.0] - 2020-12-26
 ### Removed
-- unnecessary assets
+- unnecessary assets (`mautic_manifest.js`)
 ### Added
 - Form#submission - to get submission
 - Form#submissions - list of all form submissions
