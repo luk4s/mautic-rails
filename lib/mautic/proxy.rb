@@ -14,7 +14,7 @@ module Mautic
     end
 
     def data_name
-      @endpoint.split("/").last
+      @options[:data_name] || @endpoint.split("/").last
     end
 
     def build_instance(data)

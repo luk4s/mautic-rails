@@ -1,5 +1,6 @@
 module Mautic
   module Submissions
+    # @see https://developer.mautic.org/#get-form-submissions
     class Form
       attr_reader :id
 
@@ -34,6 +35,11 @@ module Mautic
       # @return [String]
       def referer
         @raw["referer"].to_s
+      end
+
+      # @return [Hash]
+      def results
+        @raw["results"]
       end
 
     end

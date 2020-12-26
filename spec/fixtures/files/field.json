@@ -1,0 +1,23 @@
+{
+  "field":{
+    "isPublished":true,
+    "dateAdded":"2016-11-10T13:02:52+00:00",
+    "createdBy":1,
+    "createdByUser":"John Doe",
+    "dateModified":null,
+    "modifiedBy":null,
+    "modifiedByUser":null,
+    "id":165,
+    "label":"API test field",
+    "alias":"api_test_field11",
+    "type":"text",
+    "group":null,
+    "order":36,
+    "object":"lead",
+    "defaultValue":null,
+    "isRequired":false,
+    "isPubliclyUpdatable":false,
+    "isUniqueIdentifier":0,
+    "properties":[]
+  }
+}
