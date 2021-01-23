@@ -15,6 +15,15 @@
       "lastName": "Smith"
     },
     "points": 10,
+    "stage": {
+      "createdByUser": "Joe Smith",
+      "modifiedByUser": null,
+      "id": 1,
+      "name": "stage1",
+      "category": null,
+      "weight": 1,
+      "description": "Some stage description"
+    },
     "lastActive": "2015-07-21T14:19:37-05:00",
     "dateIdentified": "2015-07-21T12:27:12-05:00",
     "color": "ab5959",

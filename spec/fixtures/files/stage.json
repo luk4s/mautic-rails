@@ -1,0 +1,18 @@
+{
+  "stage": {
+    "id": 7,
+    "isPublished": 1,
+    "dateAdded": "2015-07-21T12:27:12-05:00",
+    "createdBy": 1,
+    "createdByUser": "Joe Smith",
+    "dateModified": "2015-07-21T14:12:03-05:00",
+    "modifiedBy": 1,
+    "modifiedByUser": "Joe Smith",
+    "name": "Stage A",
+    "category": null,
+    "description": "This is my first stage created via API.",
+    "weight": 0,
+    "publishUp": "2015-07-21T14:12:03-05:00",
+    "publishDown": "2015-07-21T14:12:03-05:00"
+  }
+}
