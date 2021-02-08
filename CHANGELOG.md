@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- \#23 Stage
+  - add / remove directly on contact
+  - Stage model
 ## [2.5.0] - 2020-12-26
 ### Removed
 - unnecessary assets (`mautic_manifest.js`)
@@ -39,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - update contact tags in mautic
 ## [2.3.7] - 2020-06-10
-### Fixed
+### Fixed
 - Model attributes should be Symbols
 ## [2.3.6] - 2020-06-10
 ### Added

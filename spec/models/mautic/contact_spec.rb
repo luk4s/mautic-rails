@@ -158,7 +158,6 @@ module Mautic
         expect(mautic_contact.name).to eq 'Jim Joe'
       end
 
-
       it '#first_name' do
         expect(mautic_contact.firstname).to eq mautic_contact.first_name
         mautic_contact.first_name = 'sunshine'
@@ -336,16 +335,103 @@ module Mautic
           mautic_contact.owner_id = 77
 
           stub = stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit").with(body: hash_including("owner" => "77"))
-                   .and_return(
-                     status: 200,
-                     body: { contact: { owner: { id: 77, firstName: "Tik", lastName: "Tak" } } }.to_json,
-                     headers: { 'Content-Type' => 'application/json' }
-                   )
+                                                                          .and_return(
+                                                                            status: 200,
+                                                                            body: { contact: { owner: { id: 77, firstName: "Tik", lastName: "Tak" } } }.to_json,
+                                                                            headers: { 'Content-Type' => 'application/json' }
+                                                                          )
 
           mautic_contact.save
           expect(stub).to have_been_made
 
           expect(mautic_contact.owner).to include "id" => 77, "firstName" => "Tik"
+        end
+      end
+
+      context "stage" do
+        describe "#stage" do
+          subject { mautic_contact.stage }
+          it "is object" do
+            is_expected.to be_a Mautic::Stage
+          end
+          it "name" do
+            expect(subject.name).to eq "stage1"
+          end
+        end
+        describe "#stage_id" do
+          subject { mautic_contact.stage_id }
+          it { is_expected.to eq 1 }
+        end
+
+        describe "#stage=" do
+          let(:stage_attributes) { { id: 7, name: "Test stage 7" } }
+          context "object" do
+            it "assigned directly" do
+              mautic_contact.stage = Mautic::Stage.new(oauth2, stage_attributes)
+              expect(mautic_contact.stage).to have_attributes stage_attributes
+            end
+          end
+          context "hash" do
+            it "build stage" do
+              mautic_contact.stage = stage_attributes
+              expect(mautic_contact.stage).to be_a Mautic::Stage
+              expect(mautic_contact.stage).to have_attributes stage_attributes
+            end
+          end
+        end
+
+        describe "#ensure_stage" do
+          before do
+            stub_request(:patch, "#{oauth2.url}/api/contacts/1/edit").to_return(status: 200,
+                                                                                body: contact.to_json,
+                                                                                headers: { 'Content-Type' => 'application/json' }
+            )
+          end
+          context "remove from stage" do
+            let!(:stub) { stub_request(:post, "#{oauth2.url}/api/stages/1/contact/1/remove") }
+            around do |example|
+              example.run
+              expect(mautic_contact.changes).to include stage_id: nil
+              mautic_contact.save
+              expect(stub).to have_been_made
+              expect(mautic_contact.changes).not_to include :stage_id
+            end
+            it "stage=" do
+              mautic_contact.stage = nil
+            end
+            it "stage_id=" do
+              mautic_contact.stage_id = nil
+            end
+            context "fail" do
+              let!(:stub) { stub_request(:post, "#{oauth2.url}/api/stages/1/contact/1/remove").and_return(status: 404) }
+              it "stage_id=" do
+                mautic_contact.stage_id = nil
+              end
+            end
+          end
+          context "add to stage" do
+            let!(:stub) { stub_request(:post, "#{oauth2.url}/api/stages/7/contact/1/add") }
+            around do |example|
+              stub_request(:get, "#{oauth2.url}/api/stages/7").and_return(status: 200, body: file_fixture("stage.json").read)
+              example.run
+              expect(mautic_contact.changes).to include stage_id: 7
+              mautic_contact.save
+              expect(stub).to have_been_made
+              expect(mautic_contact.changes).not_to include :stage_id
+            end
+            it "stage=" do
+              mautic_contact.stage = Mautic::Stage.new(oauth2, id: 7, name: "Tralala")
+            end
+            it "stage_id=" do
+              mautic_contact.stage_id = 7
+            end
+            context "fail" do
+              let!(:stub) { stub_request(:post, "#{oauth2.url}/api/stages/7/contact/1/add").and_return(status: 404) }
+              it "stage_id=" do
+                mautic_contact.stage_id = 7
+              end
+            end
+          end
         end
       end
     end

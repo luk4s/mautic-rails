@@ -1,6 +1,9 @@
 module Mautic
   class Contact < Model
 
+    around_create :ensure_stage, if: ->(contact) { contact.changes.has_key?(:stage_id) }
+    around_update :ensure_stage, if: ->(contact) { contact.changes.has_key?(:stage_id) }
+
     alias_attribute :first_name, :firstname
     alias_attribute :last_name, :lastname
 
@@ -41,11 +44,13 @@ module Mautic
 
       if source
         self.owner = source['owner'] || {}
+        self.stage = source['stage'] || {}
         tags = (source['tags'] || []).map { |t| Mautic::Tag.new(self, t) }.sort_by(&:name)
         self.attributes = {
           tags: Tag::Collection.new(self, *tags),
           doNotContact: source['doNotContact'] || [],
           owner: owner['id'],
+          stage_id: stage&.id,
         }
       end
     end
@@ -134,11 +139,47 @@ module Mautic
 
     # !endgroup
 
+    # @!group Stage
+
+    # @return [Mautic::Stage, nil]
+    def stage
+      @stage
+    end
+
+    # @param [Mautic:::Stage,Hash, nil] hash
+    def stage=(object_or_hash)
+      @stage = case object_or_hash
+               when Mautic::Stage
+                 object_or_hash
+               when Hash
+                 Mautic::Stage.new(connection, object_or_hash)
+               end
+      @table[:stage_id] = @stage&.id
+      @stage
+    end
+
+    # !endgroup
+
     private
 
     def clear_change
       super
       remove_instance_variable :@do_not_contact
+    end
+
+    # Add or Remove contact in stage after contact save
+    def ensure_stage
+      stage_id_change = changes[:stage_id]
+      yield
+      if stage_id_change
+        self.stage = Mautic::Stage.in(connection).find(stage_id_change)
+        stage.add_contact!(id)
+        @table[:stage_id] = stage.id
+      else
+        stage.remove_contact!(id)
+        @table.delete(:stage_id)
+      end
+      clear_changes
     end
   end
 end

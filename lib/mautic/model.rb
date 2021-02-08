@@ -2,6 +2,7 @@ module Mautic
   # Virtual model for Mautic endpoint
   #   @see https://developer.mautic.org/#endpoints
   class Model < OpenStruct
+    extend ActiveModel::Callbacks
 
     class MauticHash < Hash
 
@@ -37,6 +38,8 @@ module Mautic
 
     end
 
+    define_model_callbacks :create, :update, :save
+
     attr_reader :connection
     attr_accessor :errors
     attr_writer :changed
@@ -55,15 +58,19 @@ module Mautic
     end
 
     def save(force = false)
-      id.present? ? update(force) : create
+      run_callbacks :save do
+        id.present? ? update(force) : create
+      end
     end
 
     def update(force = false)
       return false unless changed?
 
       begin
-        json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", body: to_mautic)
-        assign_attributes json[endpoint.singularize]
+        run_callbacks :create do
+          json = @connection.request((force && :put || :patch), "api/#{endpoint}/#{id}/edit", body: to_mautic)
+          assign_attributes json[endpoint.singularize]
+        end
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
@@ -82,8 +89,10 @@ module Mautic
 
     def create
       begin
-        json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", body: to_mautic)
-        assign_attributes json[endpoint.singularize]
+        run_callbacks :create do
+          json = @connection.request(:post, "api/#{endpoint}/#{id && "#{id}/"}new", body: to_mautic)
+          assign_attributes json[endpoint.singularize]
+        end
         clear_changes
       rescue ValidationError => e
         self.errors = e.errors
@@ -124,14 +133,14 @@ module Mautic
     end
 
     def to_mautic(data = @table)
-      data.each_with_object({}) do |(key, val), mem|
-        mem[key] = if val.respond_to?(:to_mautic)
-                     val.to_mautic
-                   elsif val.is_a?(Array)
-                     val.join("|")
-                   else
-                     val
-                   end
+      data.transform_values do |val|
+        if val.respond_to?(:to_mautic)
+          val.to_mautic
+        elsif val.is_a?(Array)
+          val.join("|")
+        else
+          val
+        end
       end
     end
 
