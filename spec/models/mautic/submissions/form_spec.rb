@@ -39,7 +39,7 @@ RSpec.describe Mautic::Submissions::Form do
   end
 
   it '#ip_details' do
-    expect(subject.ip_details).to include countryIsoCode: 'LV1'
+    expect(subject.ip_details).to include countryIsoCode: 'LV'
   end
 
 end
