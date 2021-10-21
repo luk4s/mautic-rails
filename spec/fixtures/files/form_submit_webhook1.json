@@ -2,7 +2,23 @@
   "mautic.form_on_submit": {
     "submission": {
       "id": 13,
-      "ipAddress": [],
+      "ipAddress": {
+        "ip": "92.63.94.18",
+        "id": 123,
+        "ipDetails": {
+          "city": "Adazi",
+          "region": "Ādaži",
+          "zipcode": null,
+          "country": "Latvia",
+          "countryIsoCode": "LV",
+          "latitude": 57.0758,
+          "longitude": 24.3214,
+          "isp": "",
+          "organization": "",
+          "timezone": "Europe/Riga",
+          "extra": ""
+        }
+      },
       "form": {
         "id": 4,
         "name": "lead points",

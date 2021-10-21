@@ -32,6 +32,16 @@ module Mautic
         @contact ||= @connection.contacts.new(@raw["lead"])
       end
 
+      # @return [Hash]
+      def ip_details
+        ip_address["ipDetails"] || {}
+      end
+
+      # @return [Hash]
+      def ip_address
+        @raw["ipAddress"] || {}
+      end
+
       # @return [String]
       def referer
         @raw["referer"].to_s

@@ -34,4 +34,12 @@ RSpec.describe Mautic::Submissions::Form do
     expect(subject.results).to include email: "email@formsubmit.com"
   end
 
+  it '#ip_address' do
+    expect(subject.ip_address).to include ip: '92.63.94.18'
+  end
+
+  it '#ip_details' do
+    expect(subject.ip_details).to include countryIsoCode: 'LV'
+  end
+
 end
