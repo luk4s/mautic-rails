@@ -12,7 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - rails 6+ support
 ### Fixed
 - token expire exception if refresh_token is expired or invalid
-
+### Removed
+- rails4 support (migrations, rspec ...)
 ## [2.6.1] - 2021-10-21
 ### Added
 - methods ip_address and ip_details into Mautic::Submissions::Form

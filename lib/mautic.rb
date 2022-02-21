@@ -87,12 +87,4 @@ module Mautic
   end
   # Your code goes here...
 
-  if Rails.version.start_with? "4"
-    class DummyMigrationClass < ActiveRecord::Migration
-    end
-  else
-    class DummyMigrationClass < ActiveRecord::Migration[4.2]
-    end
-  end
-
 end

@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = 'Rails client for Mautic API. Provide wrapper for push to mautic form'
   s.license     = 'MIT'
 
-  s.required_ruby_version = '>= 2.7'
+  s.required_ruby_version = '>= 2.5'
 
   s.metadata['allowed_push_host'] = 'https://rubygems.org'
 
