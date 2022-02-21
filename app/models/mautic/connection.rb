@@ -95,7 +95,7 @@ module Mautic
     end
 
     def try_to_refresh_and_parse(response)
-      raise Mautic::TokenExpiredError, response if @try_to_refresh
+      raise Mautic::TokenExpiredError, response.response&.body if @try_to_refresh
 
       @try_to_refresh = true
       refresh!

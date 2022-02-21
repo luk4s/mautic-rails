@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+## [2.7.0] - 2022-02-21
+### Changed
+- ruby 3.0 support
+- fix oauth2 no method error by upgrade to latest
+- rails 6+ support
+
 ## [2.6.1] - 2021-10-21
 ### Added
 - methods ip_address and ip_details into Mautic::Submissions::Form
