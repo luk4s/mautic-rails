@@ -1,4 +1,5 @@
 require "oauth2"
+require "ostruct"
 require "mautic/engine"
 
 module Mautic
@@ -17,31 +18,39 @@ module Mautic
       @errors ||= []
       @response = response
       @request_url = response.response&.env&.url
+      unless message
+        json_body = parse_response(response)
+        message = Array(json_body['errors']).collect do |error|
+          msg = error['code'].to_s
+          msg << " (#{error['type']}):" if error['type']
+          msg << " #{error['message']}"
+          @errors << error['message']
+          msg
+        end.join(', ')
+      end
+
+      super("#{@request_url} => #{message}")
+    end
+
+    private
+
+    def parse_response(response)
       body = if response.body.start_with? "<!DOCTYPE html>"
                response.body.split("\n").last
              else
                response.body
              end
 
-      json_body = begin
-                    JSON.parse(body)
-                  rescue JSON::ParserError
-                    { "errors" => [{ "code" => response.status, "message" => body }] }
-                  end
-      message ||= Array(json_body['errors']).collect do |error|
-        msg = error['code'].to_s
-        msg << " (#{error['type']}):" if error['type']
-        msg << " #{error['message']}"
-        @errors << error['message']
-        msg
-      end.join(', ')
-
-      super("#{@request_url} => #{message}")
+      begin
+        JSON.parse(body)
+      rescue JSON::ParserError
+        { "errors" => [{ "code" => response.status, "message" => body }] }
+      end
     end
 
   end
 
-  class TokenExpiredError < RequestError
+  class TokenExpiredError < StandardError
   end
 
   class ValidationError < RequestError
@@ -77,13 +86,5 @@ module Mautic
     config.authorize_mautic_connections = ->(controller) { false }
   end
   # Your code goes here...
-
-  if Rails.version.start_with? "4"
-    class DummyMigrationClass < ActiveRecord::Migration
-    end
-  else
-    class DummyMigrationClass < ActiveRecord::Migration[4.2]
-    end
-  end
 
 end

@@ -368,14 +368,14 @@ module Mautic
           context "object" do
             it "assigned directly" do
               mautic_contact.stage = Mautic::Stage.new(oauth2, stage_attributes)
-              expect(mautic_contact.stage).to have_attributes stage_attributes
+              expect(mautic_contact.stage.attributes).to include stage_attributes
             end
           end
           context "hash" do
             it "build stage" do
               mautic_contact.stage = stage_attributes
               expect(mautic_contact.stage).to be_a Mautic::Stage
-              expect(mautic_contact.stage).to have_attributes stage_attributes
+              expect(mautic_contact.stage.attributes).to include stage_attributes
             end
           end
         end

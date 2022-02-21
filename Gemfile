@@ -14,4 +14,4 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem 'simplecov', require: false, group: :test
 # gem "rails", "4.2.8"
-gem "rails", "~> 5"
+gem "rails", "~> 6"
