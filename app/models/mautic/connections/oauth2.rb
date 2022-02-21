@@ -28,7 +28,7 @@ module Mautic
         update(token: @connection.token, refresh_token: @connection.refresh_token)
         @connection
       rescue StandardError
-        raise ::Mautic::TokenExpiredError
+        raise ::Mautic::TokenExpiredError, "your refresh_token is probably expired - re-authorize your connection"
       end
 
       def request(type, path, params = {})
