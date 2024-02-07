@@ -1,0 +1,33 @@
+name: Ruby
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: >-
+      ${{ matrix.ruby }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - { ruby: 3.3 }
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Update rubygems
+      run: gem update --system
+    - name: Install dependencies
+      run: bundle install
+    - name: Run migrations
+      run: rails db:create db:migrate RAILS_ENV=test
+    - name: Run tests
+      run: rspec
