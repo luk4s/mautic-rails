@@ -12,6 +12,8 @@ Dir.glob(File.expand_path('../support/*.rb', __FILE__)).each do |file|
   require file
 end
 
+require_relative 'factories/factories'
+
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   # config.infer_spec_type_from_file_location!
