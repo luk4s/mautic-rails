@@ -15,3 +15,7 @@ gemspec
 gem 'simplecov', require: false, group: :test
 # gem "rails", "4.2.8"
 gem "rails", "~> 6"
+
+gem "mutex_m", platforms: [:mingw, :x64_mingw, :mswin]
+gem "tzinfo-data", platforms: [:mingw, :x64_mingw, :mswin]
+gem "ffi", platforms: [:mingw, :x64_mingw, :mswin]

@@ -10,7 +10,7 @@ module Mautic
 
       m.send_data 1 do |i|
         i.name = Faker::Name.first_name
-        i.email = Faker::Internet.free_email
+        i.email = Faker::Internet.email
       end
       expect(stub).to have_been_made
     end
@@ -19,7 +19,7 @@ module Mautic
       m = FormHelper.new("https://mautic.fake.com")
       stub = stub_request(:post, "#{m.url}/form/submit")
                .with(body: hash_including("mauticform" => hash_including("name"))).to_return(status: 302)
-      m.data = {name: Faker::Name.first_name, email: Faker::Internet.free_email}
+      m.data = {name: Faker::Name.first_name, email: Faker::Internet.email}
       m.submit
       expect(stub).to have_been_made
     end
@@ -30,7 +30,7 @@ module Mautic
 
       FormHelper.submit(form: 13, request: OpenStruct.new(host: Faker::Internet.domain_name)) do |i|
         i.name = Faker::Name.first_name
-        i.email = Faker::Internet.free_email
+        i.email = Faker::Internet.email
       end
 
       expect(stub).to have_been_made
