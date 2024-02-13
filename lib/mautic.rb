@@ -78,6 +78,7 @@ module Mautic
   configure do |config|
     # This is URL of your application - its for oauth callbacks
     config.base_url = "http://localhost:3000"
+    # config.base_url = proc { |connection| magic magick }
 
     # *optional* This is your default mautic URL - used in form helper
     config.mautic_url = "https://mautic.my.app"

@@ -10,12 +10,20 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use a debugger
-# gem 'byebug', group: [:development, :test]
-gem 'simplecov', require: false, group: :test
-# gem "rails", "4.2.8"
-gem "rails", "~> 6"
+gem 'sqlite3', '~> 1.7'
 
-gem "mutex_m", platforms: [:mingw, :x64_mingw, :mswin]
-gem "tzinfo-data", platforms: [:mingw, :x64_mingw, :mswin]
-gem "ffi", platforms: [:mingw, :x64_mingw, :mswin]
+gem 'mutex_m', platforms: [:mingw, :x64_mingw, :mswin]
+gem 'tzinfo-data', platforms: [:mingw, :x64_mingw, :mswin]
+gem 'ffi', platforms: [:mingw, :x64_mingw, :mswin]
+
+gem 'database_cleaner', '~> 2.0'
+gem 'factory_bot_rails', '~> 6.4'
+gem 'faker', '~> 3.2'
+gem 'pry-rails', '~> 0.3'
+gem 'rspec-rails', '~> 6.1'
+gem 'simplecov', require: false
+gem 'webmock', '~> 3.20'
+
+gem "rubocop", "~> 1.60"
+
+gem "rubocop-rails", "~> 2.23"
