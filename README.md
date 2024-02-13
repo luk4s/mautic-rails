@@ -4,13 +4,14 @@
  
 RoR helper / wrapper for Mautic API and forms
 
-*Rails 4.2.8+, 5.1+ compatible*
+*Rails 6.0+ compatible*
+*Ruby 3.1+ compatible*
 
 ## Installation
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'mautic', '~> 2.3'
+gem "mautic", "~> 3.1"
 ```
 
 And then execute:
