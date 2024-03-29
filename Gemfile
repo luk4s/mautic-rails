@@ -10,11 +10,12 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem "puma", "~> 6.4"
 gem "sqlite3", "~> 1.7"
 
+gem "ffi", platforms: [:mingw, :x64_mingw, :mswin]
 gem "mutex_m", platforms: [:mingw, :x64_mingw, :mswin]
 gem "tzinfo-data", platforms: [:mingw, :x64_mingw, :mswin]
-gem "ffi", platforms: [:mingw, :x64_mingw, :mswin]
 
 gem "database_cleaner", "~> 2.0"
 gem "factory_bot_rails", "~> 6.4"
@@ -25,7 +26,4 @@ gem "simplecov", require: false
 gem "webmock", "~> 3.20"
 
 gem "rubocop", "~> 1.60"
-
 gem "rubocop-rails", "~> 2.23"
-
-gem "puma", "~> 6.4"
