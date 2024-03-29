@@ -170,7 +170,18 @@ Receive webhook from mautic, parse it and prepare for use.
   2. in routes must be specify `:mautic_id`, for example:
   
           post "webhook/:mautic_id", action: "webhook", on: :collection
-          
+
+## Development
+For debug, console connection with mautic or just develpment this gem, there are few helpful steps:
+```bash
+bundle
+bundle exec rails db:migrate
+```
+Run local puma server:
+```bash
+bundle exec rails s
+```
+then go to `http://localhost:3000` and setup your mautic connection.
 ## Contributing
 Ideas and pull requests are welcome!
 

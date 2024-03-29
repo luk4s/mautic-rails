@@ -5,7 +5,7 @@ module Mautic
     end
 
     def self.in(connection)
-      Proxy.new(connection, endpoint, klass: name, data_name: "field")
+      Proxy.new(connection, endpoint, klass: name, data_name: "fields")
     end
   end
 end

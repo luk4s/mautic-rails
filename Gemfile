@@ -1,6 +1,6 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Declare your gem's dependencies in mautic.gemspec.
+# Declare your gem"s dependencies in mautic.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.
 gemspec
@@ -10,20 +10,22 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-gem 'sqlite3', '~> 1.7'
+gem "sqlite3", "~> 1.7"
 
-gem 'mutex_m', platforms: [:mingw, :x64_mingw, :mswin]
-gem 'tzinfo-data', platforms: [:mingw, :x64_mingw, :mswin]
-gem 'ffi', platforms: [:mingw, :x64_mingw, :mswin]
+gem "mutex_m", platforms: [:mingw, :x64_mingw, :mswin]
+gem "tzinfo-data", platforms: [:mingw, :x64_mingw, :mswin]
+gem "ffi", platforms: [:mingw, :x64_mingw, :mswin]
 
-gem 'database_cleaner', '~> 2.0'
-gem 'factory_bot_rails', '~> 6.4'
-gem 'faker', '~> 3.2'
-gem 'pry-rails', '~> 0.3'
-gem 'rspec-rails', '~> 6.1'
-gem 'simplecov', require: false
-gem 'webmock', '~> 3.20'
+gem "database_cleaner", "~> 2.0"
+gem "factory_bot_rails", "~> 6.4"
+gem "faker", "~> 3.2"
+gem "pry-rails", "~> 0.3"
+gem "rspec-rails", "~> 6.1"
+gem "simplecov", require: false
+gem "webmock", "~> 3.20"
 
 gem "rubocop", "~> 1.60"
 
 gem "rubocop-rails", "~> 2.23"
+
+gem "puma", "~> 6.4"
