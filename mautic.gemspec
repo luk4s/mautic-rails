@@ -21,8 +21,8 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['spec/*']
 
-  s.add_dependency 'rails', '>= 6.0.0', '< 7.0'
+  s.add_dependency 'rails', '>= 6.0.0'
   # s.add_dependency 'oauth', '~> 0.5.3'
-  s.add_dependency 'oauth2', '~> 1.4'
-  s.add_dependency 'rest-client', '~> 2.1'
+  s.add_dependency 'oauth2'
+  s.add_dependency 'rest-client'
 end

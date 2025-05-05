@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.0] - 2025-05-05
+### Changed
+- do not limit dependency versions
 ## [3.1.0] - 2024-02-13
 ### Removed
 - support of ruby2.x
